@@ -32,7 +32,7 @@ export const syncUserCreation = inngest.createFunction(
 
 // function to update userdata in db
 
-export const syncUserUpadates = inngest.createFunction(
+export const syncUserUpdates = inngest.createFunction(
     {
         id: 'update-user-from-clerk'
     },
