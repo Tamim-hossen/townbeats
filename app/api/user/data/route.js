@@ -4,19 +4,18 @@ import User from "@/models/User";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
-    console.log("Request Headers:", request.headers);
+
 
     try {
-        // Extract token from x-clerk-auth-token header
+
         const authToken = request.headers.get('x-clerk-auth-token');
 
         if (!authToken) {
             return NextResponse.json({ success: false, message: "No Clerk token found in headers" });
         }
 
-        const { userId } = await getAuth(request);  // Ensure this works with Clerk's latest API
+        const { userId } = getAuth(request);  
 
-        console.log("UserID from Clerk:", userId);
 
         if (!userId) {
             return NextResponse.json({ success: false, message: "User not authenticated" });
@@ -31,7 +30,7 @@ export async function GET(request) {
 
         return NextResponse.json({ success: true, user });
     } catch (error) {
-        console.error("Error:", error);  // Log the error for debugging
+        console.error("Error:", error);  
         return NextResponse.json({ success: false, message: "Internal Server Error", error: error.message });
     }
 }
