@@ -64,7 +64,7 @@ const HeaderSlider = () => {
               <div className="flex items-center mt-4 md:mt-6 ">
                 <button className="hover:translate-x-2 transition flex flex-row justify-center gap-4 d:px-10 px-7 md:py-2.5 py-2 bg-[#c5af9a] rounded-full text-white font-medium">
                 <p>Explore</p>
-                <Image className="hover:translate-x-1 transition" src={assets.arrow_icon} alt="arrow_icon" />
+                <Image src={assets.arrow_icon} alt="arrow_icon" />
                 </button>
               </div>
             </div>
