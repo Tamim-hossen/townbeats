@@ -17,14 +17,12 @@ export async function POST(request) {
         await connectDB();
 
         // Fix async reduce issue
-        const amounts = await Promise.all(
-            items.map(async (item) => {
-                const product = await Product.findById(item.product);
-                if (!product) throw new Error(`Product not found: ${item.product}`);
-                return product.price * item.quantity;
-            })
-        );
-        const amount = amounts.reduce((acc, val) => acc + val, 0);
+        const amount = await items.reduce(async (acc,item) => {
+            const prod = await Product.findById(item.product)
+            return acc+prod.price*item.quantity
+        }
+        ,0);
+       
 
         await inngest.send({
             name: "order/created",
