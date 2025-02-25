@@ -8,6 +8,7 @@ const OrderSummary = () => {
   const { currency, router, getCartCount, getCartAmount,user, getToken ,cartItems,setCartItems } = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [state,setState] = useState("Dhaka")
   const [userAddresses, setUserAddresses] = useState([]);
   const fetchUserAddresses = async () => {
     try {
@@ -17,6 +18,7 @@ const OrderSummary = () => {
         setUserAddresses(data.addresses)
         if(data.addresses.length>0){
           setSelectedAddress(data.addresses[0])
+          setState(data.addresses[0].state)
         }
       } else{
         toast.error(data.message)
@@ -28,6 +30,7 @@ const OrderSummary = () => {
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
+    setState(address.state)
     setIsDropdownOpen(false);
   };
 
@@ -111,20 +114,19 @@ const OrderSummary = () => {
 
         <div className="space-y-4">
           <div className="flex justify-between text-base font-medium">
-            <p className="uppercase text-gray-600">Items {getCartCount()}</p>
+            <p className="uppercase text-gray-600">{getCartCount()} Items</p>
+          </div>
+          <div className="flex justify-between text-base font-medium">
+            <p className=" text-gray-600">Total Price</p>
             <p className="text-gray-800">{currency}{getCartAmount()}</p>
           </div>
           <div className="flex justify-between">
-            <p className="text-gray-600">Shipping Fee</p>
-            <p className="font-medium text-gray-800">Free</p>
-          </div>
-          <div className="flex justify-between">
-            <p className="text-gray-600">Tax (2%)</p>
-            <p className="font-medium text-gray-800">{currency}{Math.floor(getCartAmount() * 0.02)}</p>
+            <h6 className="text-gray-600">Shipping Fee<p className="text-sm">{state === "Dhaka" ? "(Inside Dhaka)" : "(Outside Dhaka)" }</p></h6>
+            <h6 className="font-medium text-gray-800">{state === "Dhaka" ? "৳80" : "৳150" }</h6>
           </div>
           <div className="flex justify-between text-lg md:text-xl font-medium border-t pt-3">
             <p>Total</p>
-            <p>{currency}{getCartAmount() + Math.floor(getCartAmount() * 0.02)}</p>
+            <p>{currency}{ state === "Dhaka" ? 80+ getCartAmount() : 150 + getCartAmount()}</p>
           </div>
         </div>
       </div>
