@@ -14,7 +14,7 @@ export async function POST(request) {
             return NextResponse.json({ success: false, message: "Invalid Data" });
         }
 
-        await connectDB
+        await connectDB();
 
         // Fix async reduce issue
         const amounts = await Promise.all(
