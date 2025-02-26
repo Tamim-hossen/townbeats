@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
     try {
         const { userId } = getAuth(request);
-        const { address, items } = await request.json();
+        const { address,address_region, items } = await request.json();
         if (!address || items.length === 0) {
             return NextResponse.json({ success: false, message: "Invalid Data" });
         }
@@ -16,11 +16,19 @@ export async function POST(request) {
         await connectDB();
 
         
-        const amount = await items.reduce(async (acc,item) => {
+        let amount = await items.reduce(async (acc,item) => {
             const prod = await Product.findById(item.product)
-            return await acc+(prod.offerPrice*item.quantity)
+            return await acc+((prod.offerPrice===0 ? prod.price :prod.offerPrice )*item.quantity)
         }
         ,0);
+        
+
+        if(address_region==='Dhaka'){
+            amount+=80
+        }
+        else{
+            amount+=150
+        }
 
         
        

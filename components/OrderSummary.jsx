@@ -18,7 +18,7 @@ const OrderSummary = () => {
         setUserAddresses(data.addresses)
         if(data.addresses.length>0){
           setSelectedAddress(data.addresses[0])
-          setState(data.addresses[0].state)
+          setState(data.addresses[0].region)
         }
       } else{
         toast.error(data.message)
@@ -30,7 +30,7 @@ const OrderSummary = () => {
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
-    setState(address.state)
+    setState(address.region)
     setIsDropdownOpen(false);
   };
 
@@ -51,6 +51,7 @@ const OrderSummary = () => {
 
       const {data} = await axios.post('/api/order/create',{
         address: selectedAddress._id,
+        address_region:state,
         items: cartItemsArray,
       }, {headers: {Authorization:`Bearer ${token}`}})
 
@@ -91,7 +92,7 @@ const OrderSummary = () => {
             >
               <span>
                 {selectedAddress
-                  ? `${selectedAddress.fullName}, ${selectedAddress.area}, ${selectedAddress.city}, ${selectedAddress.state}`
+                  ? `${selectedAddress.fullName}, ${selectedAddress.area}, ${selectedAddress.city}, ${selectedAddress.region}`
                   : "Select Address"}
               </span>
               <svg className={`w-5 h-5 inline float-right transition-transform duration-200 ${isDropdownOpen ? "rotate-0" : "-rotate-90"}`}
@@ -109,7 +110,7 @@ const OrderSummary = () => {
                     className="px-4 py-2 hover:bg-gray-500/10 cursor-pointer"
                     onClick={() => handleAddressSelect(address)}
                   >
-                    {address.fullName}, {address.area}, {address.city}, {address.state}
+                    {address.fullName}, {address.area}, {address.city}, {address.region}
                   </li>
                 ))}
                 <li

@@ -15,10 +15,9 @@ const AddAddress = () => {
     const [address, setAddress] = useState({
         fullName: '',
         phoneNumber: '',
-        pincode: '',
         area: '',
         city: '',
-        state: '',
+        region: '',
     })
 
     const onSubmitHandler = async (e) => {
@@ -63,18 +62,12 @@ const AddAddress = () => {
                             onChange={(e) => setAddress({ ...address, phoneNumber: e.target.value })}
                             value={address.phoneNumber}
                         />
-                        <input
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
-                            type="text"
-                            placeholder="Pin code"
-                            onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
-                            value={address.pincode}
-                        />
+                        
                         <textarea
                             className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500 resize-none"
                             type="text"
                             rows={4}
-                            placeholder="Address (Area and Street)"
+                            placeholder="Address (House no, Street no, Area)"
                             onChange={(e) => setAddress({ ...address, area: e.target.value })}
                             value={address.area}
                         ></textarea>
@@ -86,13 +79,28 @@ const AddAddress = () => {
                                 onChange={(e) => setAddress({ ...address, city: e.target.value })}
                                 value={address.city}
                             />
-                            <input
-                                className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
-                                type="text"
-                                placeholder="State"
-                                onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                                value={address.state}
-                            />
+                            <div className="flex flex-col gap-1 w-32">
+            <label className="text-base font-medium" htmlFor="region">
+              Region
+            </label>
+            <select
+              id="region"
+              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+              onChange={(e) => setAddress({...address, region:e.target.value})}
+              value={address.region}
+              required
+            >
+                <option>Select</option>
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chittagong">Chittagong</option>
+              <option value="Barishal">Barishal</option>
+              <option value="Khulna">Khulna</option>
+              <option value="Mymensingh">Mymensingh</option>
+              <option value="Rajshahi">Rajshahi</option>
+              <option value="Rangpur">Rangpur</option>
+              <option value="Sylhet">Sylhet</option>
+            </select>
+          </div>
                         </div>
                     </div>
                     <button type="submit" className="max-w-sm w-full mt-6 bg-orange-600 text-white py-3 hover:bg-orange-700 uppercase">

@@ -9,12 +9,13 @@ import { useParams } from "next/navigation";
 import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
+import { useUser } from "@clerk/nextjs";
 
 const Product = () => {
 
     const { id } = useParams();
 
-    const { products, router, addToCart } = useAppContext()
+    const { products, router, addToCart,user } = useAppContext()
 
     const [mainImage, setMainImage] = useState(null);
     const [productData, setProductData] = useState(null);
@@ -85,9 +86,9 @@ const Product = () => {
                         {productData.description}
                     </p>
                     <p className="text-3xl font-medium mt-6">
-                    ৳{productData.offerPrice}
+                    ৳{productData.offerPrice ? productData.offerPrice : productData.price }
                         <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-                        ৳{productData.price}
+                        {productData.offerPrice ? `৳ ${productData.price}`: ""}
                         </span>
                     </p>
                     <hr className="bg-gray-600 my-6" />
@@ -113,9 +114,9 @@ const Product = () => {
                     </div>
 
                     <div className="flex items-center mt-10 gap-4">
-                        <button onClick={() => addToCart(productData._id)} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
+                        {user? <button onClick={() => addToCart(productData._id)} className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
                             Add to Cart
-                        </button>
+                        </button>:<p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Log in to add to cart</p>}
                         <button onClick={() => { addToCart(productData._id); router.push('/cart') }} className="w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition">
                             Buy now
                         </button>

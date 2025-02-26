@@ -7,7 +7,6 @@ import { NextResponse } from "next/server";
 export async function GET(request){
     try {
         const {userId} = getAuth(request);
-        console.log(userId)
         await connectDB()
 
         const addresses = await Address.find({userId})

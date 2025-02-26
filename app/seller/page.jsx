@@ -126,12 +126,12 @@ const AddProduct = () => {
               onChange={(e) => setCategory(e.target.value)}
               defaultValue={category}
             >
-              <option value="Earphone">T-shirt</option>
-              <option value="Headphone">Panjabi</option>
-              <option value="Watch">Shirt</option>
-              <option value="Smartphone">Pant</option>
-              <option value="Laptop">Combo</option>
-              <option value="Camera">Polo-Shrit</option>
+              <option value="T-shirt">T-shirt</option>
+              <option value="Panjabi">Panjabi</option>
+              <option value="Shirt">Shirt</option>
+              <option value="Pant">Pant</option>
+              <option value="Combo">Combo</option>
+              <option value="Polo-Shrit">Polo-Shrit</option>
               <option value="Accessories">Accessories</option>
             </select>
           </div>
@@ -160,7 +160,7 @@ const AddProduct = () => {
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               onChange={(e) => setOfferPrice(e.target.value)}
               value={offerPrice}
-              required
+              
             />
           </div>
         </div>
