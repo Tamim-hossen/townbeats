@@ -9,7 +9,6 @@ export async function POST(request) {
     try {
         const { userId } = getAuth(request);
         const { address, items } = await request.json();
-       console.log(address,items)
         if (!address || items.length === 0) {
             return NextResponse.json({ success: false, message: "Invalid Data" });
         }
@@ -19,14 +18,18 @@ export async function POST(request) {
         
         const amount = await items.reduce(async (acc,item) => {
             const prod = await Product.findById(item.product)
-            return acc+prod.price*item.quantity
+            return await acc+prod.price*item.quantity
         }
         ,0);
        
 
         await inngest.send({
             name: "order/created",
-            data: { userId, address, items, amount, date: Date.now() },
+            data: { userId, 
+                    address, 
+                    items, 
+                    amount, 
+                    date: Date.now() },
         });
 
         // Clear cart
