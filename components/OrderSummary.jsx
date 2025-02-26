@@ -50,9 +50,9 @@ const OrderSummary = () => {
       const token = await getToken()
 
       const {data} = await axios.post('/api/order/create',{
-        address: setSelectedAddress._id,
-        items: cartItemsArray
-      }, {headers:{Authorization:`Bearer ${token}`}})
+        address: selectedAddress._id,
+        items: cartItemsArray,
+      }, {headers: {Authorization:`Bearer ${token}`}})
 
 
       if(data.success){
