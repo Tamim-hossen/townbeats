@@ -7,8 +7,9 @@ import Image from "next/image";
 import { useClerk, UserButton, UserProfile, useUser } from "@clerk/nextjs";
 const Navbar = () => {
 
-  const { isSeller, router } = useAppContext();
+  const { isSeller, router} = useAppContext();
   const {user} = useUser();
+
   const { openSignIn } = useClerk()
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 py-3 border-b border-gray-300 text-gray-700">
@@ -35,10 +36,10 @@ const Navbar = () => {
         {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Dashboard</button>}
 
       </div>
-
       <ul className="hidden md:flex items-center gap-4 ">
         {user ?
           <>
+          <button onClick={()=>router.push('/cart')}><Image src = {assets.cart_icon} alt="Cart"/></button>
           <UserButton>
             <UserButton.MenuItems>
               <UserButton.Action label="Cart" labelIcon={<CartIcon />} onClick={ () => router.push('/cart')} />
@@ -54,9 +55,10 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center md:hidden gap-3">
-        {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Seller Dashboard</button>}
+        {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Dashboard</button>}
         {user ?
           <>
+          <button onClick={()=>router.push('/cart')}><Image src = {assets.cart_icon} alt="Cart"/></button>
           <UserButton>
             <UserButton.MenuItems>
               <UserButton.Action label="Home" labelIcon={<HomeIcon />} onClick={ () => router.push('/')} />

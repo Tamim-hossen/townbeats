@@ -58,6 +58,7 @@ const Orders = () => {
                                         {order.items.map((item) => item.product.name + ` x ${item.quantity}`).join(", ")}
                                     </span>
                                     <span>Items : {order.items.length}</span>
+                                    <span>{currency}{order.amount}</span>
                                 </p>
                             </div>
                             <div>
@@ -66,18 +67,26 @@ const Orders = () => {
                                     <br />
                                     <span >{order.address.area}</span>
                                     <br />
-                                    <span>{`${order.address.city}, ${order.address.state}`}</span>
+                                    <span>{`${order.address.city}, ${order.address.region}`}</span>
                                     <br />
                                     <span>{order.address.phoneNumber}</span>
                                 </p>
                             </div>
-                            <p className="font-medium my-auto">{currency}{order.amount}</p>
+                            
                             <div>
                                 <p className="flex flex-col">
                                     <span>Method : COD</span>
                                     <span>Date : {new Date(order.date).toLocaleDateString()}</span>
                                     <span>Payment : Pending</span>
+                                    <span>Status: Pending</span>
+                                    
                                 </p>
+                            </div>
+                            <div className="flex flex-col justify-center items-center">
+                               
+                                    <button className="p-2 bg-gray-300 rounded-md hover:bg-gray-400 active:scale-[0.98]">Update Status</button>
+                                    
+                                
                             </div>
                         </div>
                     ))}

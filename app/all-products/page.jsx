@@ -26,7 +26,7 @@ const AllProducts = () => {
                     <p className="text-2xl font-medium">All products</p>
                     <div className="w-24 h-0.5 mt-2 bg-gray-800 rounded-full"></div>
                 </div>
-                <div className="mt-5 flex md:flex-row flex-col md:gap-3 md:justify-center justify-start md:items-center">
+                <div className="mt-5 flex flex-row md:gap-3 md:justify-center justify-start md:items-center">
                 <input 
                     type='text' 
                     value= {search}
