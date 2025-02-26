@@ -13,22 +13,22 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-32 py-3 border-b border-gray-300 text-gray-700">
       <Image
-        className="cursor-pointer w-28 md:w-32"
+        className="cursor-pointer w-16 md:w-24"
         onClick={() => router.push('/')}
         src={assets.logo}
         alt="logo"
       />
-      <div className="flex items-center gap-4 lg:gap-8 max-md:hidden">
-        <Link href="/" className="hover:text-gray-900 transition">
+      <div className="flex items-center gap-4 lg:gap-8 max-md:hidden ">
+        <Link href="/" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100">
           Home
         </Link>
-        <Link href="/all-products" className="hover:text-gray-900 transition">
+        <Link href="/all-products" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100">
           Shop
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100" >
           About Us
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition">
+        <Link href="/" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100">
           Contact
         </Link>
 
@@ -37,7 +37,6 @@ const Navbar = () => {
       </div>
 
       <ul className="hidden md:flex items-center gap-4 ">
-        <Image className="w-4 h-4" src={assets.search_icon} alt="search icon" />
         {user ?
           <>
           <UserButton>

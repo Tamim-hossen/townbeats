@@ -7,8 +7,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
 export const metadata = {
-  title: "Faaris - Wear You",
-  description: "Faaris e-commerce ",
+  title: "Town Beats - Elegant , Reasonable & Trendy",
+  description: "Town-beats e-commerce ",
 };
 
 export default function RootLayout({ children }) {

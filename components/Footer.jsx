@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="w-4/5">
           <Image className="w-28 md:w-32" src={assets.logo} alt="logo" />
           <p className="mt-6 text-sm">
-            Faaris is an online clothing brand operating from 2025. We are here to ensure you get the best quality produts at a cheaper priceddq.
+            Town Beats is an online clothing brand operating from 2022. We are here to ensure you get the best quality produts at a cheaper price.
             
           </p>
         </div>
@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="py-4 text-center text-xs md:text-sm">
-        Copyright 2025 © Faaris  All Right Reserved.
+        Copyright 2025 © Town-Beats  All Right Reserved.
       </p>
     </footer>
   );

@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^6.12.0",
     "axios": "^1.7.9",
     "cloudinary": "^2.5.1",
+    "framer-motion": "^12.4.7",
     "inngest": "^3.31.10",
     "mongoose": "^8.10.1",
     "next": "15.1.6",

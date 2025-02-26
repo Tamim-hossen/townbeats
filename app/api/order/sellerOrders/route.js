@@ -11,10 +11,7 @@ import { NextResponse } from "next/server";
 export async function GET(request){
     try {
         const {userId} = getAuth(request);
-        console.log(request)
         const isAdmin = await authSeller(userId)
-
-        console.log(isAdmin)
         if(!isAdmin){
             return NextResponse.json({success:false, message:'Not Authorized'})
         }
