@@ -16,7 +16,7 @@ export async function POST(request) {
 
         await connectDB();
 
-        // Fix async reduce issue
+        
         const amount = await items.reduce(async (acc,item) => {
             const prod = await Product.findById(item.product)
             return acc+prod.price*item.quantity
