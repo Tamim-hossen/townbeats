@@ -3,14 +3,15 @@ import search_icon from "./search_icon.svg";
 import user_icon from "./user_icon.svg";
 import cart_icon from "./cart_icon.svg";
 import add_icon from "./add_icon.svg";
+import add_icon_2 from "./add_icon_2.png";
 import order_icon from "./order_icon.svg";
 import instagram_icon from "./instagram_icon.svg";
 import facebook_icon from "./facebook_icon.svg";
 import twitter_icon from "./twitter_icon.svg";
-import box_icon from "./box_icon.svg";
+import box_icon from "./box_icon.png";
 import product_list_icon from "./product_list_icon.svg";
 import menu_icon from "./menu_icon.svg";
-import arrow_icon from "./arrow_icon.svg";
+import arrow_icon from "./arrow_icon.png";
 import increase_arrow from "./increase_arrow.svg";
 import decrease_arrow from "./decrease_arrow.svg";
 import arrow_right_icon_colored from "./arrow_right_icon_colored.svg";
@@ -38,6 +39,7 @@ export const assets = {
   user_icon,
   cart_icon,
   add_icon,
+  add_icon_2,
   order_icon,
   instagram_icon,
   facebook_icon,

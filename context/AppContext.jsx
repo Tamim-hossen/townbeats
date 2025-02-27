@@ -24,12 +24,26 @@ export const AppContextProvider = (props) => {
     const [userData, setUserData] = useState(false)
     const [isSeller, setIsSeller] = useState(false)
     const [cartItems, setCartItems] = useState({})
+    const [featuredproducts,setFeaturedProducts] = useState([])
 
     const fetchProductData = async () => {
         try {
             const {data} = await axios.get('/api/product/list')
             if(data.success){
                 setProducts(data.products)
+            }
+            else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+    const fetchFeaturedProductData = async () => {
+        try {
+            const {data} = await axios.get('/api/featuredProduct/list')
+            if(data.success){
+                setFeaturedProducts(data.featuredProducts)
             }
             else{
                 toast.error(data.message)
@@ -127,6 +141,9 @@ export const AppContextProvider = (props) => {
     useEffect(() => {
         fetchProductData()
     }, [])
+    useEffect(() => {
+        fetchFeaturedProductData()
+    }, [])
 
     useEffect(() => {
         if(user){
@@ -138,6 +155,7 @@ export const AppContextProvider = (props) => {
     const value = {
         user,getToken,isLoading,
         currency, router,
+        featuredproducts,fetchFeaturedProductData,
         isSeller, setIsSeller,
         userData, fetchUserData,
         products, fetchProductData,

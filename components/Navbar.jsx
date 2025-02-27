@@ -5,8 +5,10 @@ import Link from "next/link"
 import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import { useClerk, UserButton, UserProfile, useUser } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 const Navbar = () => {
 
+  const pathname= usePathname();
   const { isSeller, router} = useAppContext();
   const {user} = useUser();
 
@@ -19,17 +21,17 @@ const Navbar = () => {
         src={assets.logo}
         alt="logo"
       />
-      <div className="flex items-center gap-4 lg:gap-8 max-md:hidden ">
-        <Link href="/" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100">
+      <div className="flex items-center gap-4 lg:gap-8 max-md:hidden transition ease-in-out">
+        <Link href="/" className={`hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out p-3 ${pathname === '/' ? "border-b-2 border-gray-500" : ""} hover:scale-105 active:scale-100`}>
           Home
         </Link>
-        <Link href="/all-products" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100">
+        <Link href="/all-products" className={`hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100 p-3 ${pathname === '/all-products' ? "border-b-2 border-gray-500" : ""}`}>
           Shop
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100" >
+        <Link href="/" className={`hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100 p-3 ${pathname === '/about-us' ? "border-b-2 border-gray-500" : ""}`} >
           About Us
         </Link>
-        <Link href="/" className="hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100">
+        <Link href="/" className={`hover:text-gray-900 transition duration-[.5ms] delay-0 ease-in-out hover:scale-105 active:scale-100 p-3 ${pathname === '/contact' ? "border-b-2 border-gray-500" : ""}`}>
           Contact
         </Link>
 
