@@ -9,6 +9,10 @@ import axios from "axios";
 
 const FeaturedProduct = () => {
   const { featuredproducts } = useAppContext();
+  let products=featuredproducts
+  if(products.length>3){
+    products = products.slice(0,3)
+  }
 
   return (
     <div className="mt-14">
@@ -18,7 +22,7 @@ const FeaturedProduct = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-14 mt-12 md:px-14 px-4">
-        {featuredproducts.map(({ _id, image, name, description }) => (
+        {products.map(({ _id, image, name, description }) => (
           <div key={_id} className="relative group">
             <Image
               src={image[0]}
