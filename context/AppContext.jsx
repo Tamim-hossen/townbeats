@@ -43,7 +43,7 @@ export const AppContextProvider = (props) => {
         try {
             const {data} = await axios.get('/api/featuredProduct/list')
             if(data.success){
-                setFeaturedProducts(data.featuredProducts)
+                setFeaturedProducts(data.featuredProducts.reverse())
             }
             else{
                 toast.error(data.message)

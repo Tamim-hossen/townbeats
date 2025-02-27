@@ -13,9 +13,11 @@ const AddProduct = () => {
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Earphone');
+  const [category, setCategory] = useState('T-shirt');
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
+  const [colors,setColors] =useState([])
+  const [color,setColor] =useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +33,10 @@ const AddProduct = () => {
     for(let i=0;i<files.length;i++){
       formData.append('images',files[i])
     }
+
+    for(let i=0;i<colors.length;i++){
+      formData.append('colors',colors[i])
+    }
     try {
       const token = await getToken()
 
@@ -44,6 +50,7 @@ const AddProduct = () => {
         setCategory("")
         setPrice("")
         setOfferPrice("")
+        setColors([])
       }
       else{
         toast.error(data.message);
@@ -56,7 +63,13 @@ const AddProduct = () => {
     
     
   };
-
+  const addColor = (e) => {
+    (e).preventDefault();
+    if (color.trim() !== "") {
+      setColors([...colors, color]);
+      setColor("");
+    }
+  };
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">
       <form onSubmit={handleSubmit} className="md:p-10 p-4 space-y-5 max-w-lg">
@@ -164,8 +177,31 @@ const AddProduct = () => {
             />
           </div>
         </div>
+        <div>
+        <p>Add Color</p>
+        <div className="p-4 max-w-md mx-auto flex flex-col">
+         <div>
+         <input
+        type="color"
+        value={color}
+        onChange={(e) => setColor(e.target.value)}
+        placeholder="Enter a color"
+        className="border p-1 rounded mr-3 h-10"
+        />
+         <button onClick={addColor} className="bg-white text-black border-2 border-black hover:bg-black hover:text-white transition p-2 rounded">
+        Add
+       </button>
+         </div>
+      <ul className="mt-4 flex flex-row gap-2">
+        {colors.map((col, index) => (
+          <li key={index} className="w-5 h-5 p-2 border-2 border-black" style={{ backgroundColor: col }}
+          />
+        ))}
+      </ul>
+    </div>
+        </div>
         <button type="submit" className="px-8 py-2.5 bg-gray-800 text-white hover:bg-gray-300 hover:text-black transition ease-in-out font-medium rounded">
-          ADD
+          ADD - PRODUCT
         </button>
       </form>
       {/* <Footer /> */}
