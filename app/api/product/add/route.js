@@ -30,7 +30,7 @@ export async function POST(request) {
         const category = formData.get('category')
         const price = formData.get('price')
         const offerPrice = formData.get('offerPrice')
-        // const colors = formData.getAll('colors')
+        const colors = formData.getAll('colors')
 
         const files = formData.getAll('images')
 
@@ -60,16 +60,14 @@ export async function POST(request) {
             })
         )
 
-        // const image = result.map(result => result.secure_url)
-        const colors =result.map(result => result.secure_url)
+        const image = result.map(result => result.secure_url)
 
         await connectDB()
-        console.log(colors)
 
         const newProduct = await Product.create({
             userId, name, description, category, 
             price:Number(price),
-            offerPrice : Number(offerPrice),
+            offerPrice : Number(offerPrice),image,
             colors, date:Date.now()
         })
 

@@ -44,13 +44,13 @@ const AddProduct = () => {
 
       if(data.success){
         toast.success(data.message)
-        // setFiles([])
-        // setName("")
-        // setDescription("")
-        // setCategory("")
-        // setPrice("")
-        // setOfferPrice("")
-        // setColors([])
+        setFiles([])
+        setName("")
+        setDescription("")
+        setCategory("")
+        setPrice("")
+        setOfferPrice("")
+        setColors([])
       }
       else{
         toast.error(data.message);
