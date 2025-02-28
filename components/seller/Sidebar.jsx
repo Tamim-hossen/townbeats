@@ -14,7 +14,7 @@ const SideBar = () => {
     ];
 
     return (
-        <div className='md:w-64 w-16 border-r min-h-screen text-base border-gray-300 py-2 flex flex-col'>
+        <div className='h-[3.55rem] border-b-4 gap-5 md:gap-20 min-w-screen text-base border-gray-300 px-2 flex flex-row'>
             {menuItems.map((item) => {
 
                 const isActive = pathname === item.path;
@@ -24,8 +24,8 @@ const SideBar = () => {
                         <div
                             className={
                                 `flex items-center py-3 px-4 gap-3 ${isActive
-                                    ? "border-r-4 md:border-r-[6px] bg-gray-300 border-black"
-                                    : "hover:bg-gray-100/90 border-white"
+                                    ? "border-b-4 md:border-b-[6px] bg-gray-300 border-black"
+                                    : "hover:bg-gray-200 border-white"
                                 }`
                             }
                         >

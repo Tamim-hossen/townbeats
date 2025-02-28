@@ -33,28 +33,42 @@ const Product = () => {
         <Navbar />
         <div className="px-6 md:px-16 lg:px-32 pt-14 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <div className="px-5 lg:px-16 xl:px-20">
-                    <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4 h-[42rem]">
+                <div className="px-5 lg:px-16">
+                    <div className="flex gap-1 justify-center items-center">
+                        <button onClick={() => mainImage ? mainImage===productData.image[0] ? 
+                        setMainImage(productData.image[3]) :mainImage===productData.image[1] ? 
+                        setMainImage(productData.image[0]):mainImage===productData.image[2] ? 
+                        setMainImage(productData.image[1]):mainImage===productData.image[3] ? 
+                        setMainImage(productData.image[2]): "" : "" }><Image src ={assets.decrease_arrow} className="w-[30px] h-[30px] hover:scale-[1.05]" alt="Decrease Arrow"/></button>
+                    <div className="rounded-lg overflow-hidden flex justify-center items-center transition bg-gray-500/10 mb-4 w-[25rem] h-[30rem] ">
                         <Image
                             src={mainImage || productData.image[0]}
                             alt="alt"
-                            className=" object-cover mix-blend-multiply"
+                            className="h-full w-full object-cover mix-blend-multiply"
                             width={1280}
                             height={720}
                         />
                     </div>
+                    <button onClick={() => mainImage ? mainImage===productData.image[0] ? 
+                        setMainImage(productData.image[1]) :mainImage===productData.image[1] ? 
+                        setMainImage(productData.image[2]):mainImage===productData.image[2] ? 
+                        setMainImage(productData.image[3]):mainImage===productData.image[3] ? 
+                        setMainImage(productData.image[0]): "" : setMainImage(productData.image[1]) }>
+                        <Image src ={assets.increase_arrow} className="w-[30px] h-[30px] hover:scale-[1.05] active:scale-[0.98]" alt="Decrease Arrow"/></button>
+                    </div>
+                    
 
                     <div className="grid grid-cols-4 gap-4">
                         {productData.image.map((image, index) => (
                             <div
                                 key={index}
                                 onClick={() => setMainImage(image)}
-                                className="cursor-pointer rounded-lg overflow-hidden"
+                                className="cursor-pointer rounded-lg flex items-center justify-center "
                             >
                                 <Image
                                     src={image}
                                     alt="alt"
-                                    className="w-full h-auto object-cover mix-blend-multiply"
+                                    className=" object-cover mix-blend-multiply w-[5rem] h-[6rem] rounded-md"
                                     width={1280}
                                     height={720}
                                 />
@@ -68,6 +82,7 @@ const Product = () => {
                     <h1 className="text-3xl font-medium text-gray-800/90 mb-4">
                         {productData.name}
                     </h1>
+                    <p className="text-sm mt-4">Product Description:</p>
                     <p className="text-gray-600 mt-3">
                         {productData.description}
                     </p>
@@ -83,7 +98,7 @@ const Product = () => {
                             <tbody>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Brand</td>
-                                    <td className="text-gray-800/50 ">Faaris</td>
+                                    <td className="text-gray-800/50 ">Town-Beats</td>
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Color</td>

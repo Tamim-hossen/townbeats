@@ -25,14 +25,9 @@ const Banner = () => {
         </button>
       </div>
       <Image
-        className="hidden md:block max-w-80"
+        className=" max-w-80 mt-10 md:mt-0"
         src={assets.banner_image}
-        alt="md_controller_image"
-      />
-      <Image
-        className="md:hidden"
-        src={assets.sm_controller_image}
-        alt="sm_controller_image"
+        alt="banner_image"
       />
     </div>
   );

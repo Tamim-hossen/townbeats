@@ -13,16 +13,16 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center h-screen w-screen bg-white">
-         <div className="relative flex items-center justify-start md:ml-[35%] ml-[20%] h-screen w-screen bg-white">
+    <div className="flex items-center justify-center h-screen w-screen bg-white">
+         <div className="flex items-center justify-center h-screen w-screen bg-white">
       <motion.div
-        initial={{ filter: 'grayscale(100%)', x:-100, opacity: 0 }}
-        animate={{ filter: 'grayscale(0%)', x:0, opacity: 1 }}
+        initial={{ filter: 'grayscale(100%)',  opacity: 0 }}
+        animate={{ filter: 'grayscale(0%)',  opacity: 1 }}
         transition={{ duration: 1, ease: 'easeInOut' }}
       >
 
 <Image 
-          src={assets.logo}
+          src={assets.icon_black}
           alt="Loading Image" 
           className="w-52 h-auto object-cover" 
         />

@@ -25,10 +25,12 @@ import header_image_1 from "./header_image_1.png";
 import header_image_2 from "./header_image_2.png";
 import upload_area from "./upload_area.png";
 import banner_image from "./banner_image.png";
-import sm_controller_image from "./sm_controller_image.png";
 import checkmark from "./checkmark.png";
+import black_icon from "./icon_black.png"
 
 export const assets = {
+  black_icon,
+  banner_image,
   logo,
   search_icon,
   user_icon,
@@ -55,8 +57,6 @@ export const assets = {
   header_image_1,
   header_image_2,
   upload_area,
-  banner_image,
-  sm_controller_image,
   checkmark
 };
 
