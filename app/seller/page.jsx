@@ -17,7 +17,13 @@ const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
   const [colors,setColors] =useState([])
-  const [color,setColor] =useState("")
+  const [color,setColor] =useState({
+    currentColor:"",
+    XXL:0,
+    XL: 0 ,
+    L: 0,
+    M:0,
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,12 +40,14 @@ const AddProduct = () => {
       formData.append('images',files[i])
     }
 
-    for(let i=0;i<colors.length;i++){
-      formData.append('colors',colors[i])
-    }
+    for (let i = 0; i < colors.length; i++) {
+    formData.append("colors", JSON.stringify(colors[i])); 
+  }
+
+    console.log(formData)
     try {
       const token = await getToken()
-
+      
       const {data} = await axios.post('/api/product/add',formData,{headers: {Authorization:`Bearer ${token}`}})
 
       if(data.success){
@@ -63,11 +71,14 @@ const AddProduct = () => {
     
     
   };
+  const removeColor = (index) => {
+    setColors(prevColors => prevColors.filter((_, i) => i !== index));
+  };
   const addColor = (e) => {
     (e).preventDefault();
-    if (color.trim() !== "") {
+    if (color.currentColor.trim() !== "") {
       setColors([...colors, color]);
-      setColor("");
+      // setColor(prevColor => ({ ...prevColor, currentColor:"",XXL:0,XL:0,L:0,M:0 }))
     }
   };
   return (
@@ -146,6 +157,7 @@ const AddProduct = () => {
               <option value="Pant">Pant</option>
               <option value="Combo">Combo</option>
               <option value="Polo-Shrit">Polo-Shrit</option>
+              <option value="Jersey">Jersey</option>
               <option value="Accessories">Accessories</option>
             </select>
           </div>
@@ -179,28 +191,65 @@ const AddProduct = () => {
           </div>
         </div>
         <div>
-        <p>Add Color</p>
+        <p>Add Color and Sizes:</p>
         <div className="p-4 max-w-md mx-auto flex flex-col">
+        <ul className="mb-4 flex flex-col gap-2">
+        {colors.map((col, index) => (
+          <li key={index} className="flex flex-row gap-3 justify-between">
+            <div className="flex flex-row gap-3 items-center">
+            <p className="w-5 h-5 p-2 border-2 border-black" style={{ backgroundColor: col.currentColor }}></p>
+            <p className="text-center">XXL: {col.XXL}</p>
+            <p className="text-center">XL: {col.XL}</p>
+            <p className="text-center">L: {col.L}</p>
+            <p className="text-center">M: {col.M}</p></div>
+            <p onClick={() => removeColor(index)} className="cursor-pointer">x</p>
+          </li>
+        ))}
+        
+      </ul>
          <div>
          <input
         type="color"
-        value={color}
-        onChange={(e) => setColor(e.target.value)}
+        value={color.currentColor}
+        onChange={(e) => setColor(prevColor => ({ ...prevColor, currentColor: e.target.value }))}
         placeholder="Enter a color"
-        className="border p-1 rounded mr-3 h-10"
+        className="border p-1 rounded mr-3 h-10 mb-3"
         />
-         <button onClick={addColor} className="bg-white text-black border-2 border-black hover:bg-black hover:text-white transition p-2 rounded">
+         
+         </div>
+         {color.currentColor ? <div className="mb-3">
+          <ul className="mt-4 flex flex-col gap-2">
+            <p>Selected:</p>
+          <span className="w-5 h-5 p-2 border-2 border-black" style={{ backgroundColor: color.currentColor }}
+          />
+          <div className="flex flex-col">
+           <span>Enter Sizes:</span>
+            <div className="flex gap-2 justify-start items-center mt-2">
+            <label>XXL:</label>
+            <input type='number' value={color.XXL} placeholder={color.XXL} onChange={(e) => setColor(prevColor => ({ ...prevColor, XXL: e.target.value }))} className="w-12 border-2 border-gray-400 rounded-md px-2"/>
+            </div>
+            <div className="flex gap-2 justify-start items-center mt-2">
+            <label>XL:</label>
+            <input type='number' value={color.XL} placeholder={color.XL} onChange={(e) => setColor(prevColor => ({ ...prevColor, XL: e.target.value }))} className="w-12 border-2 border-gray-400 rounded-md ml-[0.6rem] px-2"/>
+            </div>
+            <div className="flex gap-2 justify-start items-center mt-2">
+            <label>L:</label>
+            <input type='number' value={color.L} placeholder={color.L} onChange={(e) => setColor(prevColor => ({ ...prevColor, L: e.target.value }))} className="w-12 border-2 border-gray-400 rounded-md ml-[1.2rem] px-2"/>
+            </div>
+            <div className="flex gap-2 justify-start items-center mt-2">
+            <label>M:</label>
+            <input type='number' value={color.M} placeholder={color.M} onChange={(e) => setColor(prevColor => ({ ...prevColor, M: e.target.value }))} className="w-12 border-2 border-gray-400 rounded-md ml-[0.9rem] px-2"/>
+            </div>
+          </div>
+          </ul>
+          </div>:""}
+      
+      <button onClick={addColor} className="bg-white text-black border-2 border-black hover:bg-black hover:text-white transition p-2 rounded">
         Add
        </button>
-         </div>
-      <ul className="mt-4 flex flex-row gap-2">
-        {colors.map((col, index) => (
-          <li key={index} className="w-5 h-5 p-2 border-2 border-black" style={{ backgroundColor: col }}
-          />
-        ))}
-      </ul>
     </div>
         </div>
+        
         <button type="submit" className="px-8 py-2.5 bg-gray-800 text-white hover:bg-gray-300 hover:text-black transition ease-in-out font-medium rounded">
           ADD - PRODUCT
         </button>

@@ -7,12 +7,12 @@ export async function POST(request){
     try {
         const {userId} = getAuth(request);
         const {featureData} = await request.json()
-        console.log(featureData)
+
         await connectDB()
 
-        const newAddress = await featuredProduct.create({...featureData,userId})
+        const featured = await featuredProduct.create({...featureData,userId})
 
-        return NextResponse.json({success:true, message:'Item Added to featured Successfully', newAddress})
+        return NextResponse.json({success:true, message:'Item Added to featured Successfully', featured})
     } catch (error) {
         return NextResponse.json({success:false, message: error.message})
     }
