@@ -9,7 +9,6 @@ import { useParams } from "next/navigation";
 import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
-import { useUser } from "@clerk/nextjs";
 
 const Product = () => {
 
@@ -40,7 +39,7 @@ const Product = () => {
                         setMainImage(productData.image[0]):mainImage===productData.image[2] ? 
                         setMainImage(productData.image[1]):mainImage===productData.image[3] ? 
                         setMainImage(productData.image[2]): "" : "" }><Image src ={assets.decrease_arrow} className="w-[30px] h-[30px] hover:scale-[1.05]" alt="Decrease Arrow"/></button>
-                    <div className="rounded-lg overflow-hidden flex justify-center items-center transition bg-gray-500/10 mb-4 w-[25rem] h-[30rem] ">
+                    <div className="rounded-lg overflow-hidden flex justify-center items-center transition bg-gray-500/10 mb-4 xl:w-[25rem] w-[40rem]  h-[30rem] ">
                         <Image
                             src={mainImage || productData.image[0]}
                             alt="alt"

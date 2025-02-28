@@ -22,7 +22,7 @@ export default function LoadingScreen() {
       >
 
 <Image 
-          src={assets.icon_black}
+          src={assets.black_icon}
           alt="Loading Image" 
           className="w-52 h-auto object-cover" 
         />
