@@ -8,7 +8,7 @@ export async function POST(request){
         const {userId} = getAuth(request);
         let CartData;
     try {
-      CartData = await request.json(); // Parse the incoming request body
+      CartData = await request.json(); // Parse the incoming request
     } catch (err) {
       return NextResponse.json({ success: false, message: 'Invalid Data' });
     }
