@@ -79,10 +79,7 @@ const ProductList = () => {
                 <th className="w-2/5 md:w-2/6 px-4 py-3 font-medium truncate">Product</th>
                 <th className="px-4 py-3 font-medium truncate max-sm:hidden">Category</th>
                 <th className="px-4 py-3 font-medium truncate">
-                  Price
-                </th>
-                <th className="px-4 py-3 font-medium truncate">
-                  Offer Price
+                  Current Price
                 </th>
                 <th className="px-4 py-3 font-medium truncate ">Action</th>
               </tr>
@@ -91,11 +88,11 @@ const ProductList = () => {
               {products.map((product, index) => (
                 <tr key={index} className="border-t border-gray-600/20">
                   <td className="md:px-4 pl-2 py-2 space-x-2 truncate">
-                    <div className="w-[100%] h-auto rounded p-2">
+                    <div className="w-[100%] h-auto rounded p-2 flex">
                       <Image
-                        src={product.image[0]}
+                        src={product.image[product.image.length-1]}
                         alt="product Image"
-                        className="w-16 h-auto"
+                        className="w-16 h-16"
                         width={1280}
                         height={700}
                       />
@@ -105,8 +102,7 @@ const ProductList = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 max-sm:hidden">{product.category}</td>
-                  <td className="px-4 py-3">৳{product.price}</td>
-                  <td className="px-4 py-3">৳{product.offerPrice}</td>
+                  <td className="px-4 py-3">৳{product.offerPrice ? product.offerPrice : product.price}</td>
                   <td className="px-4 py-3 mt-3 flex flex-col gap-1">
                     <button onClick={() => router.push(`/product/${product._id}`)} className="flex items-center justify-center gap-1 px-1 md:px-3.5 py-2 bg-gray-800 text-white rounded-md">
                       <span className="hidden md:block">Visit</span>

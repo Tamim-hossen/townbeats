@@ -74,10 +74,11 @@ const AddProduct = () => {
     <div className="flex-1 min-h-screen flex flex-col justify-between">
       <form onSubmit={handleSubmit} className="md:p-10 p-4 space-y-5 max-w-lg">
         <div>
+        <p className="font-bold text-sm mb-2 text-red-600">Note: All Image Aspect Ratio must be (5:6). The Cover Image(5th image) Aspet ratio must be (2:3).</p>
           <p className="text-base font-medium">Product Image</p>
           <div className="flex flex-wrap items-center gap-3 mt-2">
-
-            {[...Array(4)].map((_, index) => (
+          
+            {[...Array(5)].map((_, index) => (
               <label key={index} htmlFor={`image${index}`}>
                 <input onChange={(e) => {
                   const updatedFiles = [...files];

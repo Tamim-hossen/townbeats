@@ -21,7 +21,9 @@ const Product = () => {
 
     const fetchProductData = async () => {
         const product = products.find(product => product._id === id);
-        setProductData(product);
+        if (product) {
+            setProductData({ ...product, image: product.image.slice(0, 4)});
+          }
     }
 
     useEffect(() => {
@@ -57,7 +59,7 @@ const Product = () => {
                     </div>
                     
 
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className={`grid grid-cols-${productData.image.length} gap-4`}>
                         {productData.image.map((image, index) => (
                             <div
                                 key={index}

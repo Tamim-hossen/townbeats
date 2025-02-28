@@ -16,8 +16,8 @@ export default function LoadingScreen() {
     <div className="flex items-center justify-center h-screen w-screen bg-white">
          <div className="flex items-center justify-center h-screen w-screen bg-white">
       <motion.div
-        initial={{ filter: 'grayscale(100%)',  opacity: 0 }}
-        animate={{ filter: 'grayscale(0%)',  opacity: 1 }}
+        initial={{ filter: 'grayscale(100%)',y:-100 , opacity: 0 }}
+        animate={{ filter: 'grayscale(0%)',y:0, opacity: 1 }}
         transition={{ duration: 1, ease: 'easeInOut' }}
       >
 
@@ -31,8 +31,8 @@ export default function LoadingScreen() {
       {loading && (
         <motion.div
           className="absolute inset-0 bg-white mix-blend-multiply"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
+          initial={{ y:0 }}
+          animate={{ y:-100 }}
           transition={{ duration: 2, ease: 'easeInOut' }}
         />
       )}
