@@ -10,7 +10,6 @@ import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 const Product = () => {
 
