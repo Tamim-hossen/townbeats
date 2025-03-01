@@ -36,22 +36,22 @@ const Product = () => {
 
     const handleAddCart = async (product) => {
         try {
-
+            addToCart(productData._id,selectedColor,selectedSize)
             
-            const { description,date,colors,userId, ...rest } = product;  
-            const updatedProduct = { ...rest, selectedColor,selectedSize };
-            console.log(updatedProduct);
+            // const { description,date,colors,userId, ...rest } = product;  
+            // const updatedProduct = { ...rest, selectedColor,selectedSize };
+            // console.log(updatedProduct);
 
 
-            const token = await getToken();
-            const {data} = await axios.post('/api/cart/add',{updatedProduct},{headers: {Authorization:`Bearer ${token}`}})
-                if(data.success){
-                    toast.success(data.message)
-                    // router.push('/')
-                }
-                else{
-                    toast.error(data.message)
-                }
+            // const token = await getToken();
+            // const {data} = await axios.post('/api/cart/add',{updatedProduct},{headers: {Authorization:`Bearer ${token}`}})
+            //     if(data.success){
+            //         toast.success(data.message)
+            //         addToCart(productData._id,selectedColor,selectedSize)
+            //     }
+            //     else{
+            //         toast.error(data.message)
+            //     }
         } catch (error) {
           toast.error(error.message);
         }
@@ -194,7 +194,7 @@ const Product = () => {
                         </button> 
                         : <p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Select a Size</p> :
                         <p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Log in to add to cart</p>}
-                        <button onClick={() => { addToCart(productData._id); router.push('/cart') }} className="w-full py-3.5 bg-white text-black hover:bg-gray-300 border-2 border-black ease-in-out transition">
+                        <button onClick={() => { handleAddCart(productData); router.push('/cart') }} className="w-full py-3.5 bg-white text-black hover:bg-gray-300 border-2 border-black ease-in-out transition">
                             Buy now
                         </button>
                     </div>

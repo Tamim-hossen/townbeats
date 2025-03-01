@@ -12,10 +12,11 @@ export async function POST(request){
     } catch (err) {
       return NextResponse.json({ success: false, message: 'Invalid Data' });
     }
+        const data = CartData.updatedProduct
         console.log(CartData)
         await connectDB()
 
-        const newCartItem = await CartItem.create({...CartData,userId})
+        const newCartItem = await CartItem.create({...data,userId})
 
         if(CartData){
             return NextResponse.json({success:true, message:'Item Added to cart Successfully'},newCartItem)
