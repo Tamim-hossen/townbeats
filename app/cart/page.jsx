@@ -5,12 +5,12 @@ import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useAppContext } from "@/context/AppContext";
+import toast from "react-hot-toast";
 
 const Cart = () => {
 
-  const { products, router, cartItems, addToCart, updateCartQuantity, getCartCount } = useAppContext();
+  const { products, router, CartEntryDelete, cartItems, addToCart, updateCartQuantity, getCartCount } = useAppContext();
 
-  console.log(cartItems)
   return (
     <>
       <Navbar />
@@ -30,11 +30,11 @@ const Cart = () => {
                     Product Details
                   </th>
                   <th className="pb-6 md:px-4 px-1 text-gray-600 text-sm md:text-md font-medium">
-                    Color and Size
+                    Color|Size
                   </th>
 
-                  <th className="pb-6 md:px-4 px-1 text-gray-600 text-sm md:text-md font-medium">
-                  Quantity
+                  <th className="pb-6 md:px-4 px-1 text-gray-600 text-sm md:text-md font-medium flex justify-center md:justify-start md:pl-8">
+                    <p>Quantity</p>
                   </th>
                   <th className="pb-6 md:px-4 px-1 text-gray-600 text-sm md:text-md font-medium">
                     Price
@@ -46,31 +46,41 @@ const Cart = () => {
               </thead>
               <tbody>
                 {Object.keys(cartItems).map((itemId) => {
-                  const product = products.find(product => product._id === itemId);
+                  const preproduct = products.find(preproduct => preproduct._id === itemId);
+                  const product = { ...preproduct, image: preproduct.image.slice(0, 4), colors: preproduct.colors.map((col) => JSON.parse(col)) }
                   const totalQuantity = Object.values(cartItems)
                     .flat()
                     .reduce((acc, item) => acc + item.quantity, 0);
+                  cartItems[itemId].map((item, index) => {
+                    const { color, quantity, size } = item;
+                  })
 
                   if (!product || cartItems <= 0) return null;
 
                   return (
                     <tr key={itemId}>
-                      <td className="flex items-center gap-4 py-4 md:px-4 px-1">
-                        <div>
-                          <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
-                            <Image
-                              src={product.image[0]}
-                              alt={product.name}
-                              className="w-16 h-auto object-cover mix-blend-multiply"
-                              width={1280}
-                              height={720}
-                            />
-                          </div>
-                        </div>
-                        <div className="text-sm hidden md:block">
-                          <p className="text-gray-800">{product.name}</p>
+                      <td className="flex md:flex-row flex-col items-center gap-3 py-4 md:px-4 px-1">
 
+                        <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
+                          <Image
+                            src={product.image[0]}
+                            alt={product.name}
+                            className="w-16 h-auto object-cover mix-blend-multiply"
+                            width={1280}
+                            height={720}
+                          />
                         </div>
+
+                        <div className="text-sm block">
+                          <p className="text-gray-800">{product.name}</p>
+                          <p><button
+                            className="text-xs text-orange-600 mt-1"
+                            onClick={() => CartEntryDelete(itemId, 0)}
+                          >
+                            Remove
+                          </button></p>
+                        </div>
+
                       </td>
                       <td className="py-4 md:px-4 px-1 text-gray-600">
                         {cartItems[itemId].map((item, index) => {
@@ -81,51 +91,63 @@ const Cart = () => {
                                 className={`w-6 h-6 pl-[0.4rem] text-white items-center rounded-md cursor-pointer mb-0 md:mb-2`}
                                 style={{ backgroundColor: color }}
                               />
-                              <p>{size} x ( {quantity} )</p>
+                              <p>{size} </p>
                             </div>
                           );
                         })}
                       </td>
                       <td className="py-4 md:px-4 px-1">
-                      {cartItems[itemId].map((item, index) => {
+                        {cartItems[itemId].map((item, index) => {
                           const { color, quantity, size } = item;
+                          const colorIndex = product.colors.find((colorObj) => colorObj.currentColor === color);
+                          const availableStock = colorIndex ? colorIndex[size] : 0;
                           return (
-                            <div className="flex items-center md:gap-2 gap-4">
-                          <button onClick={() => updateCartQuantity(product._id, cartItems[itemId] - 1)}>
-                            <Image
-                              src={assets.decrease_arrow}
-                              alt="decrease_arrow"
-                              className="w-4 h-4"
-                            />
-                          </button>
-                          <input onChange={e => updateCartQuantity(product._id, Number(e.target.value))} type="number" value={quantity} className="w-8 border text-center appearance-none"></input>
-                          <button onClick={() => addToCart(product._id)}>
-                            <Image
-                              src={assets.increase_arrow}
-                              alt="increase_arrow"
-                              className="w-4 h-4"
-                            />
-                          </button>
-                        </div>
+                            <div key={index} className="flex items-center mb-2 md:gap-2 gap-4">
+                              <button onClick={() => updateCartQuantity(product._id, color, size, quantity - 1)}>
+                                <Image
+                                  src={assets.decrease_arrow}
+                                  alt="decrease_arrow"
+                                  className="w-4 h-4"
+                                />
+                              </button>
+
+                              <input
+                                onChange={(e) => updateCartQuantity(product._id, color, size, Number(e.target.value))}
+                                type="number"
+                                value={quantity}
+                                className="w-8 border text-center appearance-none"
+                              />
+                              {availableStock > quantity ? 
+                              <button onClick={() => updateCartQuantity(product._id, color, size, quantity + 1)}>
+                                <Image
+                                  src={assets.increase_arrow}
+                                  alt="decrease_arrow"
+                                  className="w-4 h-4"
+                                />
+                              </button> : <button onClick={()=> {toast.error(`Sorry!! Max available stock at the moment is ${availableStock}`) }}>
+                                <Image
+                                  src={assets.increase_arrow}
+                                  alt="decrease_arrow"
+                                  className="w-4 h-4 cursor-not-allowed color-black"
+                                />
+                              </button> }
+                              
+                            </div>
                           );
                         })}
-                        
+
+
                       </td>
 
                       <td className="py-4 md:px-4 px-1 text-gray-600">৳{product.offerPrice ? product.offerPrice : product.price}</td>
 
-                      <td className="py-4 md:px-4 px-1 text-gray-600"><p>৳{(product.offerPrice || product.price * totalQuantity).toFixed(2)} </p>                         <button
-                            className="md:hidden text-xs text-orange-600 mt-1"
-                            onClick={() => updateCartQuantity(product._id, 0)}
-                          >
-                            Remove
-                          </button></td>
+                      <td className="py-4 md:px-4 px-1 text-gray-600"><p>৳{(product.offerPrice || product.price * totalQuantity).toFixed(2)} </p></td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-            
+
           </div>
           <button onClick={() => router.push('/all-products')} className="group flex items-center mt-6 gap-2 text-orange-600">
             <Image

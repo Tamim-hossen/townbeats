@@ -112,8 +112,7 @@ export const AppContextProvider = (props) => {
         }
 
     }
-
-    const updateCartQuantity = async (itemId, quantity) => {
+    const CartEntryDelete = async (itemId, quantity) => {
 
         let cartData = structuredClone(cartItems);
         if (quantity === 0) {
@@ -121,6 +120,33 @@ export const AppContextProvider = (props) => {
         } else {
             cartData[itemId] = quantity;
         }
+        setCartItems(cartData)
+        if(user){
+            try {
+                const token = await getToken();
+                await axios.post('/api/cart/update', {cartData},{headers: {Authorization:`Bearer ${token}`}})
+                toast.success('Cart Updated Successfully')
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
+    }
+
+    const updateCartQuantity = async (itemId,color,size, quantity) => {
+
+        let cartData = structuredClone(cartItems);
+
+        if (cartData[itemId]) {
+
+            const existingItemIndex = cartData[itemId].findIndex(
+                (item) => item.color === color && item.size === size
+            );
+    
+            if (existingItemIndex !== -1) {
+
+                cartData[itemId][existingItemIndex].quantity = quantity;
+            }
+        } 
         setCartItems(cartData)
         if(user){
             try {
@@ -173,6 +199,7 @@ export const AppContextProvider = (props) => {
         currency, router,
         featuredproducts,fetchFeaturedProductData,
         isSeller, setIsSeller,
+        CartEntryDelete,
         userData, fetchUserData,
         products, fetchProductData,
         cartItems, setCartItems,
