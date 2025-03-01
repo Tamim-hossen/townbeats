@@ -137,14 +137,19 @@ export const AppContextProvider = (props) => {
         let cartData = structuredClone(cartItems);
 
         if (cartData[itemId]) {
-
+            
             const existingItemIndex = cartData[itemId].findIndex(
                 (item) => item.color === color && item.size === size
             );
     
             if (existingItemIndex !== -1) {
-
-                cartData[itemId][existingItemIndex].quantity = quantity;
+                if (quantity === 0) {
+                    cartData[itemId].splice(existingItemIndex, 1);
+                }
+                else{
+                    cartData[itemId][existingItemIndex].quantity = quantity;
+                }
+                
             }
         } 
         setCartItems(cartData)
@@ -160,25 +165,30 @@ export const AppContextProvider = (props) => {
     }
 
     const getCartCount = () => {
-        let totalCount = 0;
-        for (const items in cartItems) {
-            if (cartItems[items] > 0) {
-                totalCount += cartItems[items];
-            }
-        }
-        return totalCount;
-    }
+    let totalCount = 0;
+    Object.keys(cartItems).forEach((itemId) => {
+            totalCount += cartItems[itemId].reduce((acc, item) => acc + item.quantity, 0);
+    });
 
-    const getCartAmount = () => {
-        let totalAmount = 0;
-        for (const items in cartItems) {
-            let itemInfo = products.find((product) => product._id === items);
-            if (cartItems[items] > 0) {
-                totalAmount += (itemInfo.offerPrice===0? itemInfo.price : itemInfo.offerPrice) * cartItems[items];
-            }
+    return totalCount;
+}
+
+
+const getCartAmount = () => {
+    let totalAmount = 0;
+
+    Object.keys(cartItems).forEach((itemId) => {
+        const preproduct = products.find(preproduct => preproduct._id === itemId);
+        if (preproduct) {
+            const count = cartItems[itemId].reduce((acc, item) => acc + item.quantity, 0);
+            const price = preproduct.offerPrice || preproduct.price; 
+            totalAmount += count * price;
         }
-        return Math.floor(totalAmount * 100) / 100;
-    }
+    });
+
+    return Math.floor(totalAmount * 100) / 100;
+}
+
 
     useEffect(() => {
         fetchProductData()

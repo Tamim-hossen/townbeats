@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 const Cart = () => {
 
-  const { products, router, CartEntryDelete, cartItems, addToCart, updateCartQuantity, getCartCount } = useAppContext();
+  const { products, router, CartEntryDelete, cartItems, updateCartQuantity, getCartCount } = useAppContext();
 
   return (
     <>
@@ -20,7 +20,7 @@ const Cart = () => {
             <p className="text-2xl md:text-3xl text-gray-500">
               Your <span className="font-medium text-orange-600">Cart</span>
             </p>
-            <p className="text-lg md:text-xl text-gray-500/80">0 Items</p>
+            <p className="text-lg md:text-xl text-gray-500/80">{getCartCount()} Items</p>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto">
@@ -44,7 +44,7 @@ const Cart = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="overflow-hidden">
                 {Object.keys(cartItems).map((itemId) => {
                   const preproduct = products.find(preproduct => preproduct._id === itemId);
                   const product = { ...preproduct, image: preproduct.image.slice(0, 4), colors: preproduct.colors.map((col) => JSON.parse(col)) }
@@ -58,7 +58,7 @@ const Cart = () => {
                   if (!product || cartItems <= 0) return null;
 
                   return (
-                    <tr key={itemId}>
+                    <tr key={itemId} className="">
                       <td className="flex md:flex-row flex-col items-center gap-3 py-4 md:px-4 px-1">
 
                         <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
@@ -86,9 +86,9 @@ const Cart = () => {
                         {cartItems[itemId].map((item, index) => {
                           const { color, quantity, size } = item;
                           return (
-                            <div className="flex flex-col md:flex-row gap-0 md:gap-2" key={index}>
+                            <div className="flex flex-row gap-2" key={index}>
                               <p
-                                className={`w-6 h-6 pl-[0.4rem] text-white items-center rounded-md cursor-pointer mb-0 md:mb-2`}
+                                className={`w-6 h-6 pl-[0.4rem] text-white items-center rounded-md cursor-pointer mb-2`}
                                 style={{ backgroundColor: color }}
                               />
                               <p>{size} </p>
@@ -96,13 +96,13 @@ const Cart = () => {
                           );
                         })}
                       </td>
-                      <td className="py-4 md:px-4 px-1">
+                      <td className="py-4 md:px-4 px-2">
                         {cartItems[itemId].map((item, index) => {
                           const { color, quantity, size } = item;
                           const colorIndex = product.colors.find((colorObj) => colorObj.currentColor === color);
                           const availableStock = colorIndex ? colorIndex[size] : 0;
                           return (
-                            <div key={index} className="flex items-center mb-2 md:gap-2 gap-4">
+                            <div key={index} className=" relative mb-2 md:gap-2 gap-3">
                               <button onClick={() => updateCartQuantity(product._id, color, size, quantity - 1)}>
                                 <Image
                                   src={assets.decrease_arrow}
@@ -115,19 +115,19 @@ const Cart = () => {
                                 onChange={(e) => updateCartQuantity(product._id, color, size, Number(e.target.value))}
                                 type="number"
                                 value={quantity}
-                                className="w-8 border text-center appearance-none"
+                                className="w-6 md:w-8 border text-center appearance-none"
                               />
                               {availableStock > quantity ? 
                               <button onClick={() => updateCartQuantity(product._id, color, size, quantity + 1)}>
                                 <Image
                                   src={assets.increase_arrow}
-                                  alt="decrease_arrow"
+                                  alt="increase_arrow"
                                   className="w-4 h-4"
                                 />
                               </button> : <button onClick={()=> {toast.error(`Sorry!! Max available stock at the moment is ${availableStock}`) }}>
                                 <Image
                                   src={assets.increase_arrow}
-                                  alt="decrease_arrow"
+                                  alt="increase_arrow"
                                   className="w-4 h-4 cursor-not-allowed color-black"
                                 />
                               </button> }
@@ -141,7 +141,7 @@ const Cart = () => {
 
                       <td className="py-4 md:px-4 px-1 text-gray-600">৳{product.offerPrice ? product.offerPrice : product.price}</td>
 
-                      <td className="py-4 md:px-4 px-1 text-gray-600"><p>৳{(product.offerPrice || product.price * totalQuantity).toFixed(2)} </p></td>
+                      <td className="py-4 md:px-4 px-1 text-gray-600 col-span-4"><p>৳{(product.offerPrice || product.price * totalQuantity)} </p></td>
                     </tr>
                   );
                 })}
