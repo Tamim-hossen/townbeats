@@ -41,8 +41,11 @@ const OrderSummary = () => {
       }
 
       let cartItemsArray= Object.keys(cartItems).map((key)=>({product:key, quantity:cartItems[key]}))
+console.log(cartItemsArray)
+cartItemsArray = cartItemsArray.filter(item => 
+  item.quantity.filter(amount => amount.quantity > 0).length > 0
+);
 
-      cartItemsArray = cartItemsArray.filter(item => item.quantity > 0)
       if(cartItemsArray.length === 0){
         return toast.error('Cart is Empty')
       }
@@ -134,7 +137,7 @@ const OrderSummary = () => {
               placeholder="Enter promo code"
               className="flex-grow w-full outline-none p-2.5 text-gray-600 border"
             />
-            <button className="bg-orange-600 text-white px-9 py-2 hover:bg-orange-700">
+            <button className="bg-black border-2 border-black text-white px-9 py-2 hover:bg-white hover:text-black transition">
               Apply
             </button>
           </div>
@@ -161,7 +164,7 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <button onClick={createOrder} className="w-full bg-orange-600 text-white py-3 mt-5 hover:bg-orange-700">
+      <button onClick={createOrder} className="w-full bg-white text-black border-2 border-black py-3 mt-5 hover:bg-black hover:text-white transition">
         Place Order
       </button>
     </div>

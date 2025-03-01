@@ -90,9 +90,10 @@ const ProductList = () => {
                   <td className="md:px-4 pl-2 py-2 space-x-2 truncate">
                     <div className="w-[100%] h-auto rounded p-2 flex">
                       <Image
+                      onClick={() => router.push(`/product/${product._id}`)}
                         src={product.image[product.image.length-1]}
                         alt="product Image"
-                        className="w-16 h-16"
+                        className="w-20 h-full cursor-pointer"
                         width={1280}
                         height={700}
                       />
