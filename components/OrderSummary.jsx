@@ -41,7 +41,6 @@ const OrderSummary = () => {
       }
 
       let cartItemsArray= Object.keys(cartItems).map((key)=>({product:key, quantity:cartItems[key]}))
-console.log(cartItemsArray)
 cartItemsArray = cartItemsArray.filter(item => 
   item.quantity.filter(amount => amount.quantity > 0).length > 0
 );
@@ -50,12 +49,14 @@ cartItemsArray = cartItemsArray.filter(item =>
         return toast.error('Cart is Empty')
       }
 
+      const amount = Number(await getCartAmount())
       const token = await getToken()
 
       const {data} = await axios.post('/api/order/create',{
         address: selectedAddress._id,
         address_region:state,
         items: cartItemsArray,
+        amountsent: amount,
       }, {headers: {Authorization:`Bearer ${token}`}})
 
 

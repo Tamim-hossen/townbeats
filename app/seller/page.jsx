@@ -78,7 +78,7 @@ const AddProduct = () => {
     (e).preventDefault();
     if (color.currentColor.trim() !== "") {
       setColors([...colors, color]);
-      // setColor(prevColor => ({ ...prevColor, currentColor:"",XXL:0,XL:0,L:0,M:0 }))
+      setColor(prevColor => ({ ...prevColor, currentColor:"",XXL:0,XL:0,L:0,M:0 }))
     }
   };
   return (
