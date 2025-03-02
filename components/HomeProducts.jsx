@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import ProductCard from "./ProductCard";
 import { useAppContext } from "@/context/AppContext";
 
 const HomeProducts = () => {
 
   const { products, router } = useAppContext()
+   const [isVisible, setIsVisible] = useState(false);
+        useEffect(() => {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              const [entry] = entries;
+              if (entry.isIntersecting) {
+                setIsVisible(true); 
+              }
+            },
+            { threshold: 0.5 } 
+          );
+      
+          const element = document.getElementById('scroll-to-appear-3');
+          if (element) observer.observe(element);
+      
+          return () => {
+            if (element) observer.unobserve(element);
+          };
+        }, []);
 
   return (
-    <div className="flex flex-col items-center pt-14">
+    <div id="scroll-to-appear-3" className={`transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'} flex flex-col items-center pt-14`}>
       <p className="text-2xl font-medium text-left w-full">Popular products</p>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-6 pb-14 w-full">
         {products.map((product, index) => <ProductCard key={index} product={product} />)}

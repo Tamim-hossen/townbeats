@@ -1,12 +1,35 @@
-import React from "react";
+
+import React, { useEffect, useState } from 'react';
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 
 const Banner = () => {
+ 
   const {router} =useAppContext()
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setIsVisible(true); 
+        }
+      },
+      { threshold: 0.5 } 
+    );
+
+    const element = document.getElementById('scroll-to-appear');
+    if (element) observer.observe(element);
+
+    return () => {
+      if (element) observer.unobserve(element);
+    };
+  }, []);
+
+
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between md:pl-20 py-14 md:py-0 bg-[#E6E9F2] my-16 rounded-xl overflow-hidden">
+    <div id="scroll-to-appear" className={`transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'} flex flex-col md:flex-row items-center justify-between md:pl-20 py-14 md:py-0 bg-[#E6E9F2] my-16 rounded-xl overflow-hidden`}>
       <Image
         className="max-w-56"
         src={assets.header_image_1}

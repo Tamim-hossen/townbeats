@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useEffect, useState } from 'react';
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
@@ -9,9 +10,28 @@ const FeaturedProduct = () => {
   if(products.length>3){
     products = products.slice(0,3)
   }
+  const [isVisible, setIsVisible] = useState(false);
+      useEffect(() => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const [entry] = entries;
+            if (entry.isIntersecting) {
+              setIsVisible(true); 
+            }
+          },
+          { threshold: 0.75 } 
+        );
+    
+        const element = document.getElementById('scroll-to-appear-2');
+        if (element) observer.observe(element);
+    
+        return () => {
+          if (element) observer.unobserve(element);
+        };
+      }, []);
 
   return (
-    <div className="mt-14">
+    <div id="scroll-to-appear-2" className={`transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'} mt-14`}>
       <div className="flex flex-col items-center">
         <p className="text-3xl font-medium">Featured Products</p>
         <div className="w-28 h-0.5 bg-[#c5af9a] mt-2"></div>

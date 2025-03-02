@@ -1,8 +1,28 @@
-import React from "react";
+
+import React, { useEffect, useState } from 'react';
 
 const NewsLetter = () => {
+  const [isVisible, setIsVisible] = useState(false);
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          if (entry.isIntersecting) {
+            setIsVisible(true); 
+          }
+        },
+        { threshold: 0.5 } 
+      );
+  
+      const element = document.getElementById('scroll-to-appear-next');
+      if (element) observer.observe(element);
+  
+      return () => {
+        if (element) observer.unobserve(element);
+      };
+    }, []);
   return (
-    <div className="flex flex-col items-center justify-center text-center space-y-2 pt-8 pb-14">
+    <div id="scroll-to-appear-next" className={`flex flex-col items-center justify-center text-center space-y-2 pt-8 pb-14 transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
       <h1 className="md:text-4xl text-2xl font-medium">
         Subscribe now & get upto 10% off
       </h1>

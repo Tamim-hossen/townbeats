@@ -48,11 +48,12 @@ const Orders = () => {
                         console.log(order)
                         return (
                             <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-b border-gray-300">
-                                <div className="flex flex-col gap-3 border-r-2 pr-2">
+
+                                <div className="flex flex-col gap-3 border-b-2 pb-2 md:border-b-0 md:pb-0 md:border-r-2 md:pr-2">
                                     {order.items.map(((item, index) => {
                                         const preproduct = products.find(preproduct => preproduct._id === item.product);
                                         return (
-                                            <div key={index} className="flex-1 flex gap-5 max-w-80">
+                                            <div key={index} className="flex-1 flex gap-5 mb-3  max-w-80">
                                                 <Image
                                                     className="max-w-16 max-h-16 object-cover"
                                                     src={assets.box_icon}
@@ -81,8 +82,8 @@ const Orders = () => {
                                         )
                                     }))}
                                 </div>
-                                <div className="border-r-2 pr-2 flex justify-center items-center">
-                                    <p>
+                                <div className="border-b-2 pb-2 md:border-b-0 md:pb-0 md:border-r-2 md:pr-2 flex justify-center items-center">
+                                    <div>
                                         <span className="font-medium">{order.address.fullName}</span>
                                         <br />
                                         <span className="">{order.address.area}</span>
@@ -90,21 +91,22 @@ const Orders = () => {
                                         <span>{`${order.address.city}, ${order.address.region}`}</span>
                                         <br />
                                         <span>{order.address.phoneNumber}</span>
-                                    </p>
+                                        <div className="mt-2">
+                                            <p>Order Id:</p>
+                                            <p className="text-md font-bold">{order._id}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="font-medium flex justify-center items-center border-r-2 pr-2">{currency}{order.amount}</p>
-                                <div className="border-r-2 pr-2 flex justify-center items-center">
-                                    <p className="flex flex-col my0-auto">
+                                <p className="font-medium flex justify-center items-center border-b-2 pb-2 md:border-r-2 md:pr-2 md:border-b-0 md:pb-0">{currency}{order.amount}</p>
+                                <div className="md:border-r-2 md:pr-2 border-b-2 pb-2 flex justify-center items-center md:border-b-0 md:pb-0">
+                                    <div className="flex flex-col my0-auto">
                                         <span>Payment Method : COD</span>
                                         <span>Date : {new Date(order.date).toLocaleDateString()}</span>
                                         <span>Status: {order.status}</span>
-                                    </p>
+                                    </div>
                                 </div>
                                 <div className="flex flex-col justify-center items-center">
-
                                     <button className="p-2 bg-white border-2 border-black rounded-md hover:bg-black hover:text-white transition active:scale-[0.98]">Update Status</button>
-
-
                                 </div>
                             </div>
 

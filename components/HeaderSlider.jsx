@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
@@ -23,6 +23,25 @@ const HeaderSlider = () => {
       imgSrc: assets.header_image_2,
     },
   ];
+  const [isVisible, setIsVisible] = useState(false);
+          useEffect(() => {
+            const observer = new IntersectionObserver(
+              (entries) => {
+                const [entry] = entries;
+                if (entry.isIntersecting) {
+                  setIsVisible(true); 
+                }
+              },
+              { threshold: 0.25 } 
+            );
+        
+            const element = document.getElementById('scroll-to-appear-4');
+            if (element) observer.observe(element);
+        
+            return () => {
+              if (element) observer.unobserve(element);
+            };
+          }, []);
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -38,7 +57,7 @@ const HeaderSlider = () => {
   };
 
   return (
-    <div className="overflow-hidden relative w-full">
+    <div id="scroll-to-appear-4" className={`transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'} overflow-hidden relative w-full`}>
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{
