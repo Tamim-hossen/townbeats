@@ -48,11 +48,10 @@ const Cart = () => {
                 {Object.keys(cartItems).map((itemId) => {
                   const preproduct = products.find(preproduct => preproduct._id === itemId);
                   const product = { ...preproduct, image: preproduct.image.slice(0, 4), colors: preproduct.colors.map((col) => JSON.parse(col)) }
-                  const totalQuantity = Object.values(cartItems)
-                    .flat()
-                    .reduce((acc, item) => acc + item.quantity, 0);
+                  let totalQuantity = 0
                   cartItems[itemId].map((item, index) => {
                     const { color, quantity, size } = item;
+                    totalQuantity += quantity
                   })
 
                   if (!product || cartItems <= 0) return null;
@@ -87,10 +86,13 @@ const Cart = () => {
                           const { color, quantity, size } = item;
                           return (
                             <div className="flex flex-row gap-2" key={index}>
-                              <p
+                              {product.colors.length === 1 ? <p
+                                className={`h-4 ${preproduct.colors.length === 1 ? 'w-8' : 'w-4'}`}>
+                                Basic
+                              </p> : <p
                                 className={`w-6 h-6 pl-[0.4rem] text-white items-center rounded-md mb-2`}
                                 style={{ backgroundColor: color }}
-                              />
+                              />}
                               <p className="pointer-events-none">{size} </p>
                             </div>
                           );
@@ -114,21 +116,21 @@ const Cart = () => {
                               <span
                                 className="w-6 md:w-8 text-center pointer-events-none"
                               >{quantity}</span>
-                              {availableStock > quantity ? 
-                              <button onClick={() => updateCartQuantity(product._id, color, size, quantity + 1)}>
-                                <Image
-                                  src={assets.increase_arrow}
-                                  alt="increase_arrow"
-                                  className="w-4 h-4 cursor-pointer"
-                                />
-                              </button> : <button onClick={()=> {toast.error(`Sorry!! Max available stock at the moment is ${availableStock}`) }}>
-                                <Image
-                                  src={assets.increase_arrow}
-                                  alt="increase_arrow"
-                                  className="w-4 h-4 cursor-not-allowed color-black"
-                                />
-                              </button> }
-                              
+                              {availableStock > quantity ?
+                                <button onClick={() => updateCartQuantity(product._id, color, size, quantity + 1)}>
+                                  <Image
+                                    src={assets.increase_arrow}
+                                    alt="increase_arrow"
+                                    className="w-4 h-4 cursor-pointer"
+                                  />
+                                </button> : <button onClick={() => { toast.error(`Sorry!! Max available stock at the moment is ${availableStock}`) }}>
+                                  <Image
+                                    src={assets.increase_arrow}
+                                    alt="increase_arrow"
+                                    className="w-4 h-4 cursor-not-allowed color-black"
+                                  />
+                                </button>}
+
                             </div>
                           );
                         })}
@@ -138,7 +140,7 @@ const Cart = () => {
 
                       <td className="py-4 md:px-4 px-1 text-gray-600">৳{product.offerPrice ? product.offerPrice : product.price}</td>
 
-                      <td className="py-4 md:px-4 px-1 text-gray-600 col-span-4"><p>৳{(product.offerPrice || product.price * totalQuantity)} </p></td>
+                      <td className="py-4 md:px-4 px-1 text-gray-600 col-span-4"><p>৳{(product.offerPrice ? product.offerPrice * totalQuantity : product.price * totalQuantity)} </p></td>
                     </tr>
                   );
                 })}

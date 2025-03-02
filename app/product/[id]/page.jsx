@@ -15,28 +15,30 @@ const Product = () => {
 
     const { id } = useParams();
 
-    const { products,addToCart, router,user,getToken } = useAppContext()
+    const { products, addToCart, router, user, getToken } = useAppContext()
 
     const [mainImage, setMainImage] = useState(null);
     const [productData, setProductData] = useState(null);
-    const [selectedColor,setSelectedColor] = useState("")
+    const [selectedColor, setSelectedColor] = useState("")
     const [selectedSize, setSelectedSize] = useState();
 
     const fetchProductData = async () => {
         const product = products.find(product => product._id === id);
         if (product) {
-            setProductData({ ...product, image: product.image.slice(0, 4),colors:product.colors.map((col) => JSON.parse(col))});
-            const colorchange = JSON.parse(product.colors[0])
-            setSelectedColor(colorchange.currentColor)
-          }
+            setProductData({ ...product, image: product.image.slice(0, 4), colors: product.colors.map((col) => JSON.parse(col)) });
+            // const colorchange = JSON.parse(product.colors[0])
+            setSelectedColor(JSON.parse(product.colors[0]))
+        }
 
-        
+
     }
 
     const handleAddCart = async (product) => {
         try {
-            addToCart(productData._id,selectedColor,selectedSize)
-            
+            addToCart(productData._id, selectedColor.currentColor, selectedSize)
+            setSelectedColor(product.colors[0])
+            setSelectedSize("")
+
             // const { description,date,colors,userId, ...rest } = product;  
             // const updatedProduct = { ...rest, selectedColor,selectedSize };
             // console.log(updatedProduct);
@@ -52,9 +54,9 @@ const Product = () => {
             //         toast.error(data.message)
             //     }
         } catch (error) {
-          toast.error(error.message);
+            toast.error(error.message);
         }
-      };
+    };
 
 
     useEffect(() => {
@@ -67,28 +69,28 @@ const Product = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                 <div className="px-5 lg:px-16">
                     <div className="flex gap-1 justify-center items-center">
-                        <button onClick={() => mainImage ? mainImage===productData.image[0] ? 
-                        setMainImage(productData.image[3]) :mainImage===productData.image[1] ? 
-                        setMainImage(productData.image[0]):mainImage===productData.image[2] ? 
-                        setMainImage(productData.image[1]):mainImage===productData.image[3] ? 
-                        setMainImage(productData.image[2]): "" : "" }><Image src ={assets.decrease_arrow} className="w-[30px] h-[30px] hover:scale-[1.05]" alt="Decrease Arrow"/></button>
-                    <div className="rounded-lg overflow-hidden flex justify-center items-center transition bg-gray-500/10 mb-4 xl:w-[25rem] w-[40rem]  h-[30rem] ">
-                        <Image
-                            src={mainImage || productData.image[0]}
-                            alt="alt"
-                            className="h-full w-full object-cover mix-blend-multiply"
-                            width={1280}
-                            height={720}
-                        />
+                        <button onClick={() => mainImage ? mainImage === productData.image[0] ?
+                            setMainImage(productData.image[3]) : mainImage === productData.image[1] ?
+                                setMainImage(productData.image[0]) : mainImage === productData.image[2] ?
+                                    setMainImage(productData.image[1]) : mainImage === productData.image[3] ?
+                                        setMainImage(productData.image[2]) : "" : ""}><Image src={assets.decrease_arrow} className="w-[30px] h-[30px] hover:scale-[1.05]" alt="Decrease Arrow" /></button>
+                        <div className="rounded-lg overflow-hidden flex justify-center items-center transition bg-gray-500/10 mb-4 xl:w-[25rem] w-[40rem]  h-[30rem] ">
+                            <Image
+                                src={mainImage || productData.image[0]}
+                                alt="alt"
+                                className="h-full w-full object-cover mix-blend-multiply"
+                                width={1280}
+                                height={720}
+                            />
+                        </div>
+                        <button onClick={() => mainImage ? mainImage === productData.image[0] ?
+                            setMainImage(productData.image[1]) : mainImage === productData.image[1] ?
+                                setMainImage(productData.image[2]) : mainImage === productData.image[2] ?
+                                    setMainImage(productData.image[3]) : mainImage === productData.image[3] ?
+                                        setMainImage(productData.image[0]) : "" : setMainImage(productData.image[1])}>
+                            <Image src={assets.increase_arrow} className="w-[30px] h-[30px] hover:scale-[1.05] active:scale-[0.98]" alt="Decrease Arrow" /></button>
                     </div>
-                    <button onClick={() => mainImage ? mainImage===productData.image[0] ? 
-                        setMainImage(productData.image[1]) :mainImage===productData.image[1] ? 
-                        setMainImage(productData.image[2]):mainImage===productData.image[2] ? 
-                        setMainImage(productData.image[3]):mainImage===productData.image[3] ? 
-                        setMainImage(productData.image[0]): "" : setMainImage(productData.image[1]) }>
-                        <Image src ={assets.increase_arrow} className="w-[30px] h-[30px] hover:scale-[1.05] active:scale-[0.98]" alt="Decrease Arrow"/></button>
-                    </div>
-                    
+
 
                     <div className={`flex justify-center gap-4`}>
                         {productData.image.map((image, index) => (
@@ -119,9 +121,9 @@ const Product = () => {
                         {productData.description}
                     </p>
                     <p className="text-3xl font-medium mt-6">
-                    ৳{productData.offerPrice ? productData.offerPrice : productData.price }
+                        ৳{productData.offerPrice ? productData.offerPrice : productData.price}
                         <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-                        {productData.offerPrice ? `৳ ${productData.price}`: ""}
+                            {productData.offerPrice ? `৳ ${productData.price}` : ""}
                         </span>
                     </p>
                     <hr className="bg-gray-600 my-6" />
@@ -134,7 +136,7 @@ const Product = () => {
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Color</td>
-                                    <td className="text-gray-800/50 ">{productData.colors.length > 1 ? "Multi" : <p className={`w-10 h-5 pl-[0.4rem] text-white items-center rounded-md cursor-pointer border-2 border-gray-800 }`} style={{ backgroundColor: productData.colors[0].currentColor }} ></p>}</td>
+                                    <td className="text-gray-800/50 ">{productData.colors.length > 1 ? "Multi" : "Basic"}</td>
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Category</td>
@@ -145,55 +147,69 @@ const Product = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className={`mt-4 ${productData.colors.length===0 ? "hidden" : "block"}`}>
-                    {productData.colors.length > 1 ? <p>Choose Color and Size:</p> : <p>Choose Size:</p>}
+                    <div className={`mt-4 ${productData.colors.length === 0 ? "hidden" : "block"} flex flex-col`}>
+                        {productData.colors.length > 1 ? <p>Choose Color and Size:</p> : <p>Choose Size:</p>}
                         <ul className="mt-4 flex flex-row gap-2">
                             {productData.colors.map((col, index) => (
-                            <div key={index} >
-                            
-                            {productData.colors.length > 1 ? <li onClick={()=> setSelectedColor(col.currentColor)} 
-                            className={`w-6 h-6 pl-[0.4rem] text-white items-center rounded-md cursor-pointer ${col === selectedColor ? 'border-2 border-gray-800 ' : ""}`} 
-                            style={{ backgroundColor: col.currentColor }}
-                            > {col.currentColor===selectedColor? '✓':""} </li>:""}
-                            <div className="flex flex-row gap-3">
-                            {col.XXL > 0 ? 
-                            <li onClick={()=>setSelectedSize('XXL')} 
-                            className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
-                             hover:text-white transition ease-in-out active:scale-[0.96]
-                             ${selectedSize=== 'XXL' ? 'bg-black text-white':''}`}>2XL</li>:
-                             <li className="mt-3 w-10 text-center cursor-not-allowed border-2 border-gray-300 text-gray-500 p-1 rounded-md">2XL</li>}
-                             {col.XL > 0 ? 
-                            <li onClick={()=>setSelectedSize('XL')} 
-                            className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
-                             hover:text-white transition ease-in-out active:scale-[0.96]
-                             ${selectedSize=== 'XL' ? 'bg-black text-white':''}`}>XL</li>:
-                             <li className="mt-3 w-10 text-center cursor-not-allowed border-2 border-gray-300 text-gray-500 p-1 rounded-md">XL</li>}
-                             {col.L > 0 ? 
-                            <li onClick={()=>setSelectedSize('L')} 
-                            className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
-                             hover:text-white transition ease-in-out active:scale-[0.96]
-                             ${selectedSize=== 'L' ? 'bg-black text-white':''}`}>L</li>:
-                             <li className="mt-3 w-10 text-center cursor-not-allowed border-2 border-gray-300 text-gray-500 p-1 rounded-md">L</li>}
-                             {col.M > 0 ? 
-                            <li onClick={()=>setSelectedSize('M')} 
-                            className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
-                             hover:text-white transition ease-in-out active:scale-[0.96]
-                             ${selectedSize=== 'M' ? 'bg-black text-white':''}`}>M</li>:
-                             <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">M</li>}
-                            </div>
-                            </div>
+                                <div key={index} >
+
+                                    {productData.colors.length > 1 ? <li onClick={() => setSelectedColor(col)}
+                                        className={`w-6 h-6 pl-[0.4rem] text-white items-center rounded-md cursor-pointer ${col === selectedColor.currentColor ? 'border-2 border-gray-800 ' : ""}`}
+                                        style={{ backgroundColor: col.currentColor }}
+                                    > {col.currentColor === selectedColor.currentColor ? '✓' : ""} </li> : ""}
+                                    <div className="flex flex-row gap-3">
+                                    </div>
+                                </div>
                             ))}
-                            
+
                         </ul>
+                        <div className="flex flex0row gap-3">
+                            <ul>
+                                {selectedColor.XXL > 0 ? <li onClick={() => setSelectedSize('XXL')}
+                                    className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
+                                             hover:text-white transition ease-in-out active:scale-[0.96]
+                             ${selectedSize === 'XXL' ? 'bg-black text-white' : ''}`}>2XL</li> :
+                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">2XL</li>}
+                            </ul>
+                            <ul>
+                                {selectedColor.XL > 0 ? <li onClick={() => setSelectedSize('XL')}
+                                    className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
+                                             hover:text-white transition ease-in-out active:scale-[0.96]
+                             ${selectedSize === 'XL' ? 'bg-black text-white' : ''}`}>XL</li> :
+                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">XL</li>}
+                            </ul>
+                            <ul>
+                                {selectedColor.L > 0 ? <li onClick={() => setSelectedSize('L')}
+                                    className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
+                                             hover:text-white transition ease-in-out active:scale-[0.96]
+                             ${selectedSize === 'L' ? 'bg-black text-white' : ''}`}>L</li> :
+                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">L</li>}
+                            </ul>
+                            <ul>
+                                {selectedColor.M > 0 ? <li onClick={() => setSelectedSize('M')}
+                                    className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
+                                             hover:text-white transition ease-in-out active:scale-[0.96]
+                             ${selectedSize === 'M' ? 'bg-black text-white' : ''}`}>M</li> :
+                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">M</li>}
+                            </ul>
+                        </div>
                     </div>
 
                     <div className="flex items-center mt-10 gap-4">
-                        {user ? selectedSize  ? <button onClick={() => handleAddCart(productData)} className="w-full py-3.5 bg-black border-2 border-black text-white hover:bg-gray-300 hover:text-black ease-in-out transition">
+                        {user ? selectedSize ? <button onClick={() => handleAddCart(productData)} className="w-full py-3.5 bg-black border-2 border-black text-white hover:bg-gray-300 hover:text-black ease-in-out transition">
                             Add to Cart
-                        </button> 
-                        : <p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Select a Size</p> :
-                        <p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Log in to add to cart</p>}
-                        <button onClick={() => { handleAddCart(productData); router.push('/cart') }} className="w-full py-3.5 bg-white text-black hover:bg-gray-300 border-2 border-black ease-in-out transition">
+                        </button>
+                            : <p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Select a Size</p> :
+                            <p className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition text-center">Log in to add to cart</p>}
+                        <button onClick={() => {
+                            if (selectedSize) {
+                                handleAddCart(productData);
+                                router.push('/cart');
+                            } else {
+                                toast.error("Select a size");
+                            }
+                        }}
+                            className="w-full py-3.5 bg-white text-black hover:bg-gray-300 border-2 border-black ease-in-out transition">
                             Buy now
                         </button>
                     </div>
