@@ -19,7 +19,7 @@ const FeaturedProduct = () => {
               setIsVisible(true); 
             }
           },
-          { threshold: 0.75 } 
+          { threshold: 0.25 } 
         );
     
         const element = document.getElementById('scroll-to-appear-2');

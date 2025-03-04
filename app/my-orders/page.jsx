@@ -49,7 +49,6 @@ const MyOrders = () => {
                     <h2 className="text-lg font-medium mt-6">My Orders</h2>
                     {loading ? <Loading /> : (<div className="max-w-5xl border-t border-gray-300 text-sm">
                         {orders.map((order, index) => {
-                            console.log(order)
                             return (
                                 <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-b border-gray-300">
                                     <div className="flex flex-col gap-3">
@@ -63,16 +62,16 @@ const MyOrders = () => {
                                                         alt="box_icon"
                                                     />
                                                     <div className="flex flex-col gap-3">
-                                                        <span className="font-medium text-base">
+                                                        <span className="font-medium text-base md:max-w-[8.5rem]">
                                                             {preproduct.name}
                                                         </span>
-                                                        {item.quantity.map((quantity,index) => {
+                                                        {item.quantity.map((quantity, index) => {
                                                             return (
                                                                 <div key={index} className="flex flex-row gap-2">
                                                                     <span>Item :</span>
-                                                                    <p style={{backgroundColor: `${preproduct.colors.length===1 ? "" : quantity.color}`}} 
-                                                                    className={`h-4 ${preproduct.colors.length===1 ? 'w-8' : 'w-4'}`}>
-                                                                    {preproduct.colors.length===1 ? "Basic" : ""}
+                                                                    <p style={{ backgroundColor: `${preproduct.colors.length === 1 ? "" : quantity.color}` }}
+                                                                        className={`h-4 ${preproduct.colors.length === 1 ? 'w-8' : 'w-4'}`}>
+                                                                        {preproduct.colors.length === 1 ? "Basic" : ""}
                                                                     </p>
                                                                     <p>{quantity.size}</p>
                                                                     <p>x {quantity.quantity}</p>
@@ -86,7 +85,7 @@ const MyOrders = () => {
                                         }))}
                                     </div>
                                     <div>
-                                        <p>
+                                        <p >
                                             <span className="font-medium">{order.address.fullName}</span>
                                             <br />
                                             <span className="">{order.address.area}</span>
@@ -94,6 +93,9 @@ const MyOrders = () => {
                                             <span>{`${order.address.city}, ${order.address.region}`}</span>
                                             <br />
                                             <span>{order.address.phoneNumber}</span>
+                                            <br/>
+                                            <span>Order Id:</span>
+                                            <span className="text-md font-bold">{order._id}</span>
                                         </p>
                                     </div>
                                     <p className="font-medium ">{currency}{order.amount}</p>
@@ -101,7 +103,7 @@ const MyOrders = () => {
                                         <p className="flex flex-col my0-auto">
                                             <span>Payment Method : COD</span>
                                             <span>Date : {new Date(order.date).toLocaleDateString()}</span>
-                                            <span>Status: {order.status}</span>
+                                            <span>Status: <span className={`${order.status === 'Delivered' ? 'text-green-500':''} ml-1`}>{order.status}</span></span>
                                         </p>
                                     </div>
                                 </div>)

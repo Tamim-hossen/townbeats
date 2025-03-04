@@ -13,6 +13,26 @@ const Orders = () => {
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const updateOrder = async (_id) =>{
+        try {
+            setOrders(prevOrders => 
+                prevOrders.map((order) => order._id === _id ? {...order, status : order.status=== 'Order Placed' ? 'Order Confirmed': order.status=== 'Order Confirmed' ? 'Order Processed' :
+                    order.status=== 'Order Processed' ? 'Order Shipped' : 'Delivered'
+                 } : order)
+            )
+            const token= getToken()
+            const {data} = await axios.post('/api/order/update',{_id},{headers: {Authorization: `Bearer ${token}`}})
+            
+            if(data.success){
+                toast.success("Successfully Updated")
+            }
+            else{
+                toast.error("Something Went Wrong")
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
 
     const fetchSellerOrders = async () => {
         try {
@@ -21,7 +41,7 @@ const Orders = () => {
             const { data } = await axios.get('/api/order/sellerOrders', { headers: { Authorization: `Bearer ${token}` } })
 
             if (data.success) {
-                setOrders(data.orders)
+                setOrders(data.orders.reverse())
                 setLoading(false)
             }
             else {
@@ -45,7 +65,6 @@ const Orders = () => {
                 <h2 className="text-lg font-medium">Orders</h2>
                 <div className="max-w-6xl rounded-md">
                     {orders.map((order, index) => {
-                        console.log(order)
                         return (
                             <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-b border-gray-300">
 
@@ -59,7 +78,7 @@ const Orders = () => {
                                                     src={assets.box_icon}
                                                     alt="box_icon"
                                                 />
-                                                <div className="flex flex-col gap-3">
+                                                <div className="flex flex-col gap-3 md:max-w-32 pr-2 ">
                                                     <span className="font-medium text-base">
                                                         {preproduct.name}
                                                     </span>
@@ -102,11 +121,16 @@ const Orders = () => {
                                     <div className="flex flex-col my0-auto">
                                         <span>Payment Method : COD</span>
                                         <span>Date : {new Date(order.date).toLocaleDateString()}</span>
-                                        <span>Status: {order.status}</span>
+                                        <span>Status:<span className={`${order.status === 'Delivered' ? 'text-green-500':''} ml-1`}>{order.status}</span> </span>
                                     </div>
                                 </div>
                                 <div className="flex flex-col justify-center items-center">
-                                    <button className="p-2 bg-white border-2 border-black rounded-md hover:bg-black hover:text-white transition active:scale-[0.98]">Update Status</button>
+                                   {order.status === 'Delivered' ? ( <button onClick={() => {toast.success("Already Delivered")}} 
+                                    className={` text-gray-300 cursor-not-allowed border-gray-300"
+                                    p-2 bg-white border-2 border-Gray rounded-md transition active:scale-[0.98]`}>
+                                        Update Status</button>) : ( <button onClick={() => {updateOrder(order._id) ; }} 
+                                    className={`p-2 bg-white border-2 border-black rounded-md hover:bg-black hover:text-white transition active:scale-[0.98]`}>
+                                        Update Status</button>)}
                                 </div>
                             </div>
 

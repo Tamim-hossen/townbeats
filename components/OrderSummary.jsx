@@ -5,22 +5,22 @@ import toast from "react-hot-toast";
 
 const OrderSummary = () => {
 
-  const { currency, router, getCartCount, getCartAmount,user, getToken ,cartItems,setCartItems } = useAppContext()
+  const { currency, router, getCartCount, getCartAmount, user, updateProduct, getToken, cartItems, setCartItems } = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [state,setState] = useState("Dhaka")
+  const [state, setState] = useState("Dhaka")
   const [userAddresses, setUserAddresses] = useState([]);
   const fetchUserAddresses = async () => {
     try {
       const token = await getToken();
-      const {data} = await axios.get('/api/user/getAddress',{headers: {Authorization:`Bearer ${token}`}})
-      if(data.success){
+      const { data } = await axios.get('/api/user/getAddress', { headers: { Authorization: `Bearer ${token}` } })
+      if (data.success) {
         setUserAddresses(data.addresses)
-        if(data.addresses.length>0){
+        if (data.addresses.length > 0) {
           setSelectedAddress(data.addresses[0])
           setState(data.addresses[0].region)
         }
-      } else{
+      } else {
         toast.error(data.message)
       }
     } catch (error) {
@@ -36,35 +36,36 @@ const OrderSummary = () => {
 
   const createOrder = async () => {
     try {
-      if(!selectedAddress){
+      if (!selectedAddress) {
         return toast.error('Please Select an Address')
       }
 
-      let cartItemsArray= Object.keys(cartItems).map((key)=>({product:key, quantity:cartItems[key]}))
-cartItemsArray = cartItemsArray.filter(item => 
-  item.quantity.filter(amount => amount.quantity > 0).length > 0
-);
+      let cartItemsArray = Object.keys(cartItems).map((key) => ({ product: key, quantity: cartItems[key] }))
+      cartItemsArray = cartItemsArray.filter(item =>
+        item.quantity.filter(amount => amount.quantity > 0).length > 0
+      );
 
-      if(cartItemsArray.length === 0){
+      if (cartItemsArray.length === 0) {
         return toast.error('Cart is Empty')
       }
 
       const amount = Number(await getCartAmount())
       const token = await getToken()
 
-      const {data} = await axios.post('/api/order/create',{
+      await updateProduct(cartItems)
+      const { data } = await axios.post('/api/order/create', {
         address: selectedAddress._id,
-        address_region:state,
+        address_region: state,
         items: cartItemsArray,
         amountsent: amount,
-      }, {headers: {Authorization:`Bearer ${token}`}})
+      }, { headers: { Authorization: `Bearer ${token}` } })
 
 
-      if(data.success){
+      if (data.success) {
         toast.success(data.message)
         setCartItems({})
         router.push('/order-placed')
-      } else{
+      } else {
         toast.error(data.message)
       }
     } catch (error) {
@@ -73,7 +74,7 @@ cartItemsArray = cartItemsArray.filter(item =>
   }
 
   useEffect(() => {
-    if(user){
+    if (user) {
       fetchUserAddresses();
     }
   }, [user])
@@ -155,12 +156,12 @@ cartItemsArray = cartItemsArray.filter(item =>
             <p className="text-gray-800">{currency}{getCartAmount()}</p>
           </div>
           <div className="flex justify-between">
-            <h6 className="text-gray-600">Shipping Fee<p className="text-sm">{state === "Dhaka" ? "(Inside Dhaka)" : "(Outside Dhaka)" }</p></h6>
-            <h6 className="font-medium text-gray-800">{state === "Dhaka" ? "৳80" : "৳150" }</h6>
+            <h6 className="text-gray-600">Shipping Fee<p className="text-sm">{state === "Dhaka" ? "(Inside Dhaka)" : "(Outside Dhaka)"}</p></h6>
+            <h6 className="font-medium text-gray-800">{state === "Dhaka" ? "৳80" : "৳150"}</h6>
           </div>
           <div className="flex justify-between text-lg md:text-xl font-medium border-t pt-3">
             <p>Total</p>
-            <p>{currency}{ state === "Dhaka" ? 80+ getCartAmount() : 150 + getCartAmount()}</p>
+            <p>{currency}{state === "Dhaka" ? 80 + getCartAmount() : 150 + getCartAmount()}</p>
           </div>
         </div>
       </div>
