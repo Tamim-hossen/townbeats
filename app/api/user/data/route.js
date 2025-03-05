@@ -11,7 +11,7 @@ export async function GET(request) {
         const authToken = request.headers.get('x-clerk-auth-token');
 
         if (!authToken) {
-            return NextResponse.json({ success: false, message: "No Clerk token found in headers" });
+            return NextResponse.json({ success: false });
         }
 
         const { userId } = getAuth(request);  

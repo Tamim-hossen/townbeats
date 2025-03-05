@@ -21,13 +21,14 @@ const Product = () => {
     const [productData, setProductData] = useState(null);
     const [selectedColor, setSelectedColor] = useState("")
     const [selectedSize, setSelectedSize] = useState();
+    const [selectedQuantity, setSelectedQuantity] = useState(1);
 
     const fetchProductData = async () => {
         const product = products.find(product => product._id === id);
         if (product) {
             setProductData({ ...product, image: product.image.slice(0, 4), colors: product.colors.map((col) => JSON.parse(col)) });
             // const colorchange = JSON.parse(product.colors[0])
-            setSelectedColor(JSON.parse(product.colors[0]))
+            setSelectedColor(product.colors.length > 1 ? "" : JSON.parse(product.colors[0]))
         }
 
 
@@ -35,8 +36,9 @@ const Product = () => {
 
     const handleAddCart = async (product) => {
         try {
-            addToCart(productData._id, selectedColor.currentColor, selectedSize)
-            setSelectedColor(product.colors[0])
+            if (selectedColor, selectedSize)
+                addToCart(productData._id, selectedColor.currentColor, selectedSize,selectedQuantity)
+            setSelectedColor(product.colors.length > 1 ? "" : product.colors[0])
             setSelectedSize("")
 
             // const { description,date,colors,userId, ...rest } = product;  
@@ -148,7 +150,7 @@ const Product = () => {
                         </table>
                     </div>
                     <div className={`mt-4 ${productData.colors.length === 0 ? "hidden" : "block"} flex flex-col`}>
-                        {productData.colors.length > 1 ? <p>Choose Color and Size:</p> : <p>Choose Size:</p>}
+                        {productData.colors.length > 1 ? <p>Choose Color, Size and Quantity:</p> : <p>Choose Size:</p>}
                         <ul className="mt-4 flex flex-row gap-2">
                             {productData.colors.map((col, index) => (
                                 <div key={index} >
@@ -163,39 +165,77 @@ const Product = () => {
                             ))}
 
                         </ul>
-                        <div className="flex flex0row gap-3">
+                        <div className={`flex flex-row gap-3 transform transition-all duration-500 ease-in-out ${selectedColor ? 'translate-y-0 opacity-100' : '-translate-y-10 -translate-x-64 scale-0 cursor-default opacity-0'
+                            }`}>
                             <ul>
-                                {selectedColor.XXL > 0 ? <li onClick={() => setSelectedSize('XXL')}
+                                {selectedColor.XXL > 0 ? <li onClick={() => { setSelectedSize('XXL'); setSelectedQuantity(1) }}
                                     className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
                                              hover:text-white transition ease-in-out active:scale-[0.96]
                              ${selectedSize === 'XXL' ? 'bg-black text-white' : ''}`}>2XL</li> :
-                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">2XL</li>}
+                                    <li onClick={() => toast.error('Size is not available')} className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">2XL</li>}
                             </ul>
                             <ul>
-                                {selectedColor.XL > 0 ? <li onClick={() => setSelectedSize('XL')}
+                                {selectedColor.XL > 0 ? <li onClick={() => { setSelectedSize('XL'); setSelectedQuantity(1) }}
                                     className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
                                              hover:text-white transition ease-in-out active:scale-[0.96]
                              ${selectedSize === 'XL' ? 'bg-black text-white' : ''}`}>XL</li> :
-                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">XL</li>}
+                                    <li onClick={() => toast.error('Size is not available')} className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">XL</li>}
                             </ul>
                             <ul>
-                                {selectedColor.L > 0 ? <li onClick={() => setSelectedSize('L')}
+                                {selectedColor.L > 0 ? <li onClick={() => { setSelectedSize('L'); setSelectedQuantity(1) }}
                                     className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
                                              hover:text-white transition ease-in-out active:scale-[0.96]
                              ${selectedSize === 'L' ? 'bg-black text-white' : ''}`}>L</li> :
-                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">L</li>}
+                                    <li onClick={() => toast.error('Size is not available')} className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">L</li>}
                             </ul>
                             <ul>
-                                {selectedColor.M > 0 ? <li onClick={() => setSelectedSize('M')}
+                                {selectedColor.M > 0 ? <li onClick={() => { setSelectedSize('M'); setSelectedQuantity(1) }}
                                     className={`mt-3 w-10 text-center cursor-pointer border-2 border-black p-1 rounded-md hover:bg-black
                                              hover:text-white transition ease-in-out active:scale-[0.96]
                              ${selectedSize === 'M' ? 'bg-black text-white' : ''}`}>M</li> :
-                                    <li className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">M</li>}
+                                    <li onClick={() => toast.error('Size is not available')} className="mt-3 w-10 text-center cursor-not-allowed border-2  border-gray-300 text-gray-500 p-1 rounded-md">M</li>}
                             </ul>
+                        </div>
+                        <div className={`flex flex-row gap-3 mt-5 transform transition-all duration-500 ease-in-out ${selectedSize ? 'translate-y-0 opacity-100' : '-translate-y-10 -translate-x-64 scale-0 cursor-default opacity-0'
+                            }`}>
+                            <div className=" md:gap-2 pl-3 grid grid-flow-col grid-cols-none max-w-32">
+                                {selectedQuantity > 1 ? <button onClick={() => setSelectedQuantity((prev) => prev - 1)}>
+                                    <Image
+                                        src={assets.decrease_arrow}
+                                        alt="decrease_arrow"
+                                        className="w-4 h-4  cursor-pointer"
+                                    />
+                                </button>:<button onClick={()=>toast.error('Minimum Selectable Quantity in 1')}>
+                                    <Image
+                                        src={assets.decrease_arrow}
+                                        alt="decrease_arrow"
+                                        className="w-4 h-4  cursor-not-allowed"
+                                    />
+                                </button>}
+                                <div className="w-12  h-8 text-center flex items-center justify-center pointer-events-none"><span>
+                                    {selectedQuantity}
+                                </span></div>
+
+                                {selectedQuantity < selectedColor[selectedSize] ?
+                                    <button onClick={() => setSelectedQuantity((prev) => prev + 1)}>
+                                        <Image
+                                            src={assets.increase_arrow}
+                                            alt="increase_arrow"
+                                            className="w-4 h-4  cursor-pointer"
+                                        />
+                                    </button> : <button onClick={() => { toast.error(`Sorry!! Max available stock at the moment is ${selectedColor[selectedSize]}`) }}>
+                                        <Image
+                                            src={assets.increase_arrow}
+                                            alt="increase_arrow"
+                                            className="w-4 h-4  cursor-not-allowed color-black"
+                                        />
+                                    </button>}
+
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center mt-10 gap-4">
+                    <div className={`flex items-center mt-10 gap-4 transform transition-all duration-500 ease-in-out ${selectedColor ? 'translate-y-0' : '-translate-y-10'}`}>
                         {user ? selectedSize ? <button onClick={() => handleAddCart(productData)} className="w-full py-3.5 bg-black border-2 border-black text-white hover:bg-gray-300 hover:text-black ease-in-out transition">
                             Add to Cart
                         </button>

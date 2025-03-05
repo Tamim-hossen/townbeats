@@ -66,15 +66,13 @@ export const AppContextProvider = (props) => {
             if (data.success) {
                 setUserData(data.user)
                 setCartItems(data.user.cartItems)
-            } else {
-                toast.error(data.message)
-            }
+            } 
         } catch (error) {
             toast.error(error.message)
         }
     }
 
-    const addToCart = async (itemId, color, size) => {
+    const addToCart = async (itemId, color, size, squantity) => {
 
         let cartData = structuredClone(cartItems);
 
@@ -87,14 +85,14 @@ export const AppContextProvider = (props) => {
 
             if (existingItemIndex !== -1) {
 
-                cartData[itemId][existingItemIndex].quantity += 1;
+                cartData[itemId][existingItemIndex].quantity += squantity;
             } else {
 
-                cartData[itemId].push({ color, size, quantity: 1 });
+                cartData[itemId].push({ color, size, quantity: squantity });
             }
         } else {
 
-            cartData[itemId] = [{ color, size, quantity: 1 }];
+            cartData[itemId] = [{ color, size, quantity: squantity }];
         }
 
         setCartItems(cartData);

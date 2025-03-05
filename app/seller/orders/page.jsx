@@ -13,20 +13,21 @@ const Orders = () => {
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const updateOrder = async (_id) =>{
+    const updateOrder = async (_id, nextStatus) => {
         try {
-            setOrders(prevOrders => 
-                prevOrders.map((order) => order._id === _id ? {...order, status : order.status=== 'Order Placed' ? 'Order Confirmed': order.status=== 'Order Confirmed' ? 'Order Processed' :
-                    order.status=== 'Order Processed' ? 'Order Shipped' : 'Delivered'
-                 } : order)
+            setOrders(prevOrders =>
+                prevOrders.map((order) => order._id === _id ? {
+                    ...order, status: nextStatus
+                } : order)
             )
-            const token= getToken()
-            const {data} = await axios.post('/api/order/update',{_id},{headers: {Authorization: `Bearer ${token}`}})
-            
-            if(data.success){
+            const token = getToken()
+            const { data } = await axios.post('/api/order/update', { _id, nextStatus }, { headers: { Authorization: `Bearer ${token}` } })
+
+
+            if (data.success) {
                 toast.success("Successfully Updated")
             }
-            else{
+            else {
                 toast.error("Something Went Wrong")
             }
         } catch (error) {
@@ -66,7 +67,7 @@ const Orders = () => {
                 <div className="max-w-6xl rounded-md">
                     {orders.map((order, index) => {
                         return (
-                            <div key={index} className="flex flex-col md:flex-row gap-5 justify-between p-5 border-b border-gray-300">
+                            <div key={index}  className={`flex flex-col md:flex-row gap-5 justify-between p-5 border-2 rounded-md mb-2 border-gray-300 ${order.status === 'Delivered' ? 'border-green-200' : order.status === 'Cancelled' ? 'border-red-200' : ''}`}>
 
                                 <div className="flex flex-col gap-3 border-b-2 pb-2 md:border-b-0 md:pb-0 md:border-r-2 md:pr-2">
                                     {order.items.map(((item, index) => {
@@ -121,16 +122,58 @@ const Orders = () => {
                                     <div className="flex flex-col my0-auto">
                                         <span>Payment Method : COD</span>
                                         <span>Date : {new Date(order.date).toLocaleDateString()}</span>
-                                        <span>Status:<span className={`${order.status === 'Delivered' ? 'text-green-500':''} ml-1`}>{order.status}</span> </span>
+                                        <span>Status:<span className={`${order.status === 'Delivered' ? 'text-green-500' : order.status === 'Cancelled' ? 'text-red-500' : ""} ml-1`}>{order.status}</span> </span>
                                     </div>
                                 </div>
-                                <div className="flex flex-col justify-center items-center">
-                                   {order.status === 'Delivered' ? ( <button onClick={() => {toast.success("Already Delivered")}} 
-                                    className={` text-gray-300 cursor-not-allowed border-gray-300"
-                                    p-2 bg-white border-2 border-Gray rounded-md transition active:scale-[0.98]`}>
-                                        Update Status</button>) : ( <button onClick={() => {updateOrder(order._id) ; }} 
-                                    className={`p-2 bg-white border-2 border-black rounded-md hover:bg-black hover:text-white transition active:scale-[0.98]`}>
-                                        Update Status</button>)}
+                                <div className="flex flex-col justify-center items-center gap-3">
+                                    {
+                                        order.status !== 'Cancelled' ? (
+                                            order.status === 'Delivered' ? (
+                                                <button
+                                                    onClick={() => { toast.success("Already Delivered") }}
+                                                    className="text-gray-300 w-32 cursor-not-allowed border-gray-300 p-2 bg-white border-2 border-Gray rounded-md transition active:scale-[0.98]"
+                                                >
+                                                    Update Status
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => {
+                                                        const nextStatus = order.status === 'Order Placed' ? 'Order Confirmed' :
+                                                            order.status === 'Order Confirmed' ? 'Order Processed' :
+                                                                order.status === 'Order Processed' ? 'Order Shipped' :
+                                                                    'Delivered';
+                                                        updateOrder(order._id, nextStatus);
+                                                    }}
+                                                    className="p-2 w-32 bg-white border-2 border-black rounded-md hover:bg-black hover:text-white transition active:scale-[0.98]"
+                                                >
+                                                    Update Status
+                                                </button>
+                                            )
+                                        ) : null
+                                    }
+
+                                    {
+                                        order.status !== 'Delivered' ? (
+                                            order.status === 'Cancelled' ? (
+                                                <button
+                                                    onClick={() => { toast.error("Already Cancelled") }}
+                                                    className="text-gray-300 w-32 cursor-not-allowed border-gray-300 p-2 bg-white border-2 border-Gray rounded-md transition active:scale-[0.98]"
+                                                >
+                                                    Cancel Order
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => {
+                                                        const nextStatus = 'Cancelled'
+                                                        updateOrder(order._id, nextStatus);
+                                                    }}
+                                                    className="p-2 w-32 text-red-500 bg-white border-2 border-red-500 rounded-md hover:bg-red-500 hover:text-white transition active:scale-[0.98]"
+                                                >
+                                                    Cancel Order
+                                                </button>
+                                            )
+                                        ) : null
+                                    }
                                 </div>
                             </div>
 
