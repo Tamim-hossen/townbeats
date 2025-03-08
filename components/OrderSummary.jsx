@@ -172,7 +172,7 @@ const OrderSummary = () => {
         </div>
       </div>}
 
-      {loading? <p className="w-full bg-gray-300 text-gray-500 text-center border-2 border-gray-500 py-3 mt-5 transition-all">
+      {loading? <p className="w-full bg-gray-300 text-gray-500 text-center border-2 border-gray-500 py-3 mt-5 transition-all cursor-default">
         Please wait
       </p>:<button onClick={createOrder} className="w-full bg-white text-black border-2 border-black py-3 mt-5 hover:bg-black hover:text-white active:scale-[0.98] transition">
         Place Order
