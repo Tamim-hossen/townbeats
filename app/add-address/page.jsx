@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 const AddAddress = () => {
 
-    const {getToken, router} = useAppContext()
+    const { getToken, router } = useAppContext()
 
     const [address, setAddress] = useState({
         fullName: '',
@@ -25,12 +25,12 @@ const AddAddress = () => {
 
         try {
             const token = await getToken();
-            const {data} = await axios.post('/api/user/addAddress',{address},{headers: {Authorization:`Bearer ${token}`}})
-            if(data.success){
+            const { data } = await axios.post('/api/user/addAddress', { address }, { headers: { Authorization: `Bearer ${token}` } })
+            if (data.success) {
                 toast.success(data.message)
                 router.push('/cart')
             }
-            else{
+            else {
                 toast.error(data.message)
             }
         } catch (error) {
@@ -62,7 +62,7 @@ const AddAddress = () => {
                             onChange={(e) => setAddress({ ...address, phoneNumber: e.target.value })}
                             value={address.phoneNumber}
                         />
-                        
+
                         <textarea
                             className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500 resize-none"
                             type="text"
@@ -80,27 +80,27 @@ const AddAddress = () => {
                                 value={address.city}
                             />
                             <div className="flex flex-col gap-1 w-32">
-            <label className="text-base font-medium" htmlFor="region">
-              Region
-            </label>
-            <select
-              id="region"
-              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
-              onChange={(e) => setAddress({...address, region:e.target.value})}
-              value={address.region}
-              required
-            >
-                <option>Select</option>
-              <option value="Dhaka">Dhaka</option>
-              <option value="Chittagong">Chittagong</option>
-              <option value="Barishal">Barishal</option>
-              <option value="Khulna">Khulna</option>
-              <option value="Mymensingh">Mymensingh</option>
-              <option value="Rajshahi">Rajshahi</option>
-              <option value="Rangpur">Rangpur</option>
-              <option value="Sylhet">Sylhet</option>
-            </select>
-          </div>
+                                <label className="text-base font-medium" htmlFor="region">
+                                    Region
+                                </label>
+                                <select
+                                    id="region"
+                                    className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+                                    onChange={(e) => setAddress({ ...address, region: e.target.value })}
+                                    value={address.region}
+                                    required
+                                >
+                                    <option>Select</option>
+                                    <option value="Dhaka">Dhaka</option>
+                                    <option value="Chittagong">Chittagong</option>
+                                    <option value="Barishal">Barishal</option>
+                                    <option value="Khulna">Khulna</option>
+                                    <option value="Mymensingh">Mymensingh</option>
+                                    <option value="Rajshahi">Rajshahi</option>
+                                    <option value="Rangpur">Rangpur</option>
+                                    <option value="Sylhet">Sylhet</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" className="max-w-sm w-full mt-6 bg-orange-600 text-white py-3 hover:bg-orange-700 uppercase">

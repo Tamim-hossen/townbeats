@@ -47,8 +47,8 @@ const HeaderSlider = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % sliderData.length);
-    }, 3000);
+      setCurrentSlide((prev) => (prev + 1) % 2);
+    }, 10000);
     return () => clearInterval(interval);
   }, [sliderData.length]);
 
@@ -57,9 +57,9 @@ const HeaderSlider = () => {
   };
 
   return (
-    <div id="scroll-to-appear-4" className={`transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'} overflow-hidden relative w-full`}>
+    <div id="scroll-to-appear-4" className={`transition-all duration-700 ${isVisible ? 'animate-slide-up' : 'opacity-0'} top-[-1.5rem]  overflow-hidden relative w-full`}>
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-700 ease-in-out "
         style={{
           transform: `translateX(-${currentSlide * 100}%)`,
         }}
@@ -70,8 +70,8 @@ const HeaderSlider = () => {
             className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
           >
             {slide.id === 1 ? (<div className="md:pl-8 mt-10 md:mt-0">
-              <p className="md:text-base text-[#000000] pb-1">Trendy</p>
-              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
+              <p className="md:text-base text-[#000000] pb-1 cursor-default">Trendy</p>
+              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] cursor-default text-2xl font-semibold">
                 {slide.title}
               </h1>
               <div className="flex items-center mt-4 md:mt-6 ">

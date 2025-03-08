@@ -16,7 +16,7 @@ const Banner = () => {
           setIsVisible(true); 
         }
       },
-      { threshold: 0.5 } 
+      { threshold: 0.75 } 
     );
 
     const element = document.getElementById('scroll-to-appear');

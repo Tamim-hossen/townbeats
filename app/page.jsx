@@ -16,15 +16,21 @@ const Home = () => {
 
   return (
     <>
-      <Navbar/>
+    <div className="fixed top-0 left-0 right-0 z-50 bg-opacity-95 bg-white">
+    <Navbar/>
+    </div>
+      
+      <div className="absolute top-16 md:top-20">
+      <HeaderSlider />
       <div className="px-6 md:px-16 lg:px-32">
-        <HeaderSlider />
         <FeaturedProduct />
         <HomeProducts />
         <Banner />
         <NewsLetter />
       </div>
       <Footer />
+      </div>
+      
     </>
   );
 };
