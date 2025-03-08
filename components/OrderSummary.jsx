@@ -1,10 +1,12 @@
+'use client'
+import Loading from "./Loading";
 import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const OrderSummary = () => {
-
+ const [loading,setLoading] = useState(false)
   const { currency, router, getCartCount, getCartAmount, user, updateProduct, getToken, cartItems, setCartItems } = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -37,7 +39,9 @@ const OrderSummary = () => {
   const createOrder = async () => {
     try {
       if (!selectedAddress) {
+        setLoading(false)
         return toast.error('Please Select an Address')
+
       }
 
       let cartItemsArray = Object.keys(cartItems).map((key) => ({ product: key, quantity: cartItems[key] }))
@@ -47,11 +51,12 @@ const OrderSummary = () => {
 
       if (cartItemsArray.length === 0) {
         return toast.error('Cart is Empty')
+        setLoading(false)
       }
 
       const amount = Number(await getCartAmount())
       const token = await getToken()
-
+      setLoading(true)
       await updateProduct(cartItems)
       const { data } = await axios.post('/api/order/create', {
         address: selectedAddress._id,
@@ -85,6 +90,7 @@ const OrderSummary = () => {
         Order Summary
       </h2>
       <hr className="border-gray-500/30 my-5" />
+      {loading? <Loading/> : 
       <div className="space-y-6">
         <div>
           <label className="text-base font-medium uppercase text-gray-600 block mb-2">
@@ -164,11 +170,13 @@ const OrderSummary = () => {
             <p>{currency}{state === "Dhaka" ? 80 + getCartAmount() : 150 + getCartAmount()}</p>
           </div>
         </div>
-      </div>
+      </div>}
 
-      <button onClick={createOrder} className="w-full bg-white text-black border-2 border-black py-3 mt-5 hover:bg-black hover:text-white transition">
+      {loading? <p className="w-full bg-gray-300 text-gray-500 text-center border-2 border-gray-500 py-3 mt-5 transition-all">
+        Please wait
+      </p>:<button onClick={createOrder} className="w-full bg-white text-black border-2 border-black py-3 mt-5 hover:bg-black hover:text-white active:scale-[0.98] transition">
         Place Order
-      </button>
+      </button>}
     </div>
   );
 };

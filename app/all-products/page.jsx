@@ -6,13 +6,15 @@ import { useAppContext } from "@/context/AppContext";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import LoadingScreen from "@/components/Loading";
 
 const AllProducts = () => {
 
     const { products } = useAppContext();
     const [search, setSearch] = useState('');
     const [searchBar, setSearchBar] = useState(false)
-
+    const [loading,setLoading] = useState(true)
+useEffect(()=>{setTimeout(()=>{setLoading(false)},3000)},[])
     const filteredProducts = products.filter((product) => {
         return product.name.toLowerCase().includes(search.toLowerCase()) ||
             product.description.toLowerCase().includes(search.toLowerCase());
@@ -46,7 +48,7 @@ const AllProducts = () => {
                     />
                 </div>
 
-                <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-12 pb-14 w-full duration-500 transition-all ${searchBar ? 'translate-y-0 ' : '-translate-y-16'
+                {loading ? <LoadingScreen/> : <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-12 pb-14 w-full duration-500 transition-all ${searchBar ? 'translate-y-0 ' : '-translate-y-16'
                         }`}>
                     {filteredProducts.length > 0 ? (
                         filteredProducts.map((product, index) => (
@@ -56,7 +58,7 @@ const AllProducts = () => {
                         products.map((product, index) => <ProductCard key={index} product={product} />)
                     ) : <p className="text-center text-lg">No available products</p>}
 
-                </div>
+                </div>}
             </div>
             <Footer />
         </>

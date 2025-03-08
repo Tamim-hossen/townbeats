@@ -13,31 +13,35 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen w-screen bg-white">
-         <div className="flex items-center justify-center h-screen w-screen bg-white">
-      <motion.div
-        initial={{ filter: 'grayscale(100%)',y:-100 , opacity: 0 }}
-        animate={{ filter: 'grayscale(0%)',y:0, opacity: 1 }}
-        transition={{ duration: 1, ease: 'easeInOut' }}
-      >
-
-<Image 
-          src={assets.black_icon}
-          alt="Loading Image" 
-          className="w-52 h-auto object-cover" 
-        />
-        </motion.div>
-        
-      {loading && (
+    <div className="flex items-center justify-center h-[100%] w-[100%] bg-white">
+      <div className="flex items-center justify-center h-96 w-80 bg-transparent relative">
         <motion.div
-          className="absolute inset-0 bg-white mix-blend-multiply"
-          initial={{ y:0 }}
-          animate={{ y:-100 }}
-          transition={{ duration: 2, ease: 'easeInOut' }}
-        />
-      )}
+          initial={{
+            opacity: 1,
+            clipPath: 'inset(100% 0 0 0)', 
+          }}
+          animate={{
+            opacity: 1,
+            clipPath: 'inset(0% 0 0 0)',
+          }}
+          transition={{ duration: 3, ease: 'easeInOut', repeat: 1, repeatType:'reverse' }}
+        >
+          <Image 
+            src={assets.black_icon}
+            alt="Loading Image" 
+            className="w-52 h-auto object-cover" 
+          />
+        </motion.div>
+
+        {loading && (
+          <motion.div
+            className="absolute inset-0 bg-white mix-blend-multiply"
+            initial={{ y: 0 }}
+            animate={{ y: -100 }}
+            transition={{ duration: 2, ease: 'easeInOut' }}
+          />
+        )}
+      </div>
     </div>
-    </div>
-   
   );
 }

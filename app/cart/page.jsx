@@ -1,16 +1,19 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
 import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useAppContext } from "@/context/AppContext";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 const Cart = () => {
-
+  const[loading,setLoading] = useState(true)
   const { products, router, CartEntryDelete, cartItems, updateCartQuantity, getCartCount } = useAppContext();
-
+useEffect(()=> {
+  setTimeout(()=>{setLoading(false)},3000)
+},[])
   return (
     <>
       <Navbar />
@@ -23,7 +26,7 @@ const Cart = () => {
             <p className="text-lg md:text-xl text-gray-500/80">{getCartCount()} Items</p>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full table-auto">
+            {loading ? <Loading/>:<table className="min-w-full table-auto">
               <thead className="text-left">
                 <tr>
                   <th className="text-nowrap pb-6 md:px-4 px-1 text-gray-600 text-sm md:text-md font-medium">
@@ -145,7 +148,7 @@ const Cart = () => {
                   );
                 })}
               </tbody>
-            </table>
+            </table>}
 
           </div>
           <button onClick={() => router.push('/all-products')} className="group flex items-center mt-6 gap-2 text-black">

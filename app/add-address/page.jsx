@@ -42,40 +42,44 @@ const AddAddress = () => {
     return (
         <>
             <Navbar />
-            <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between">
+            <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between items-center">
                 <form onSubmit={onSubmitHandler} className="w-full">
                     <p className="text-2xl md:text-3xl text-gray-500">
-                        Add Shipping <span className="font-semibold text-orange-600">Address</span>
+                        Add Shipping <span className="font-semibold text-black">Address</span>
                     </p>
                     <div className="space-y-3 max-w-sm mt-10">
                         <input
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                            className="px-2 py-2.5 focus:border-black transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
                             type="text"
                             placeholder="Full name"
+                            required
                             onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
                             value={address.fullName}
                         />
                         <input
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                            className="px-2 py-2.5 focus:border-black transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
                             type="text"
                             placeholder="Phone number"
+                            required
                             onChange={(e) => setAddress({ ...address, phoneNumber: e.target.value })}
                             value={address.phoneNumber}
                         />
 
                         <textarea
-                            className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500 resize-none"
+                            className="px-2 py-2.5 focus:border-black transition border border-gray-500/30 rounded outline-none w-full text-gray-500 resize-none"
                             type="text"
                             rows={4}
                             placeholder="Address (House no, Street no, Area)"
+                            required
                             onChange={(e) => setAddress({ ...address, area: e.target.value })}
                             value={address.area}
                         ></textarea>
                         <div className="flex space-x-3">
                             <input
-                                className="px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
+                                className="px-2 py-2.5 focus:border-black transition border border-gray-500/30 rounded outline-none w-full text-gray-500"
                                 type="text"
                                 placeholder="City/District/Town"
+                                required
                                 onChange={(e) => setAddress({ ...address, city: e.target.value })}
                                 value={address.city}
                             />
@@ -103,12 +107,12 @@ const AddAddress = () => {
                             </div>
                         </div>
                     </div>
-                    <button type="submit" className="max-w-sm w-full mt-6 bg-orange-600 text-white py-3 hover:bg-orange-700 uppercase">
+                    <button type="submit" className="max-w-sm w-full mt-6 bg-white text-black border-2 border-black py-3 hover:bg-black hover:text-white transition-all active:scale-[0.98] uppercase">
                         Save address
                     </button>
                 </form>
                 <Image
-                    className="md:mr-16 mt-16 md:mt-0"
+                    className="md:mr-16 mt-24 md:mt-24 w-72 h-72"
                     src={assets.my_location_image}
                     alt="my_location_image"
                 />

@@ -36,9 +36,9 @@ const ProductCard = ({ product }) => {
 
             <div className="flex items-end justify-between w-full mt-1  p-3 rounded-md">
                 <p className="text-base font-medium">{currency}{product.offerPrice? product.offerPrice : product.price}</p>
-                <button onClick={() => { addToCart(product._id); router.push('/cart') }} 
+                <button onClick={() => { router.push('/product/' + product._id); }} 
                 className=" max-sm:hidden px-4 py-1.5 text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-gray-200 transition">
-                    Buy now
+                    View
                 </button>
             </div>
         </div>
