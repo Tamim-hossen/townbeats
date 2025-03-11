@@ -25,7 +25,7 @@ useEffect(()=>{
                     <p className="text-3xl font-medium">Other <span className="font-medium text-black">Products</span></p>
                     <div className="w-28 h-0.5 bg-black mt-2"></div>
                 </div>
-                {loading ? <Loading/>:<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full pl-16">
+                {loading ? <Loading/>:<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full px-6 md:px-16 lg:px-32">
                     {productData.map((product, index) => <ProductCard key={index} product={product} />)}
                 </div>}
                 <button className="px-8 py-2 mb-16 border rounded text-gray-500/70 hover:bg-slate-50/90 transition" onClick={()=> productData = products.slice(0,10)}>
