@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 * {
     scroll-behavior: smooth;
@@ -12,7 +10,7 @@
       -webkit-appearance: none;
       margin: 0;
     }
-  }
+}
 
 ::-webkit-scrollbar {
   display: none;

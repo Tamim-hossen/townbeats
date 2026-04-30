@@ -9,7 +9,7 @@ const ProductCard = ({ product }) => {
     return (
         <div
             
-            className="flex flex-col items-start max-w-[200px] w-full cursor-pointer bg-gray-100 rounded-md border-2 p-1"
+            className="flex flex-col items-start max-w-[200px] w-full cursor-pointer bg-gray-100 rounded-md border-1 border-gray-300 p-2"
         >
             <div
     onClick={() => {

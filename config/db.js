@@ -1,26 +1,30 @@
 import mongoose from "mongoose";
 
-let cached = global.mongoose
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGODB_URL;
 
-if(!cached) {
-    cached = global.mongoose = { conn : null , promise:null}
+if (!MONGODB_URI) {
+  throw new Error("Missing MONGODB_URI environment variable.");
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
 async function connectDB(){
-    if(cached.conn){
-        return cached.conn
-    }
-    if(!cached.promise){
-        const ops = {
-            bufferCommands:false
-        }
+  if (cached.conn) return cached.conn;
 
-        cached.promise = mongoose.connect(`${process.env.MONGODB_URI}/faaris`, ops)
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      dbName: process.env.MONGODB_DB || undefined,
+      bufferCommands: false,
+    });
+  }
 
-    }
-
-    cached.conn = await cached.promise
-    return cached.conn
+  cached.conn = await cached.promise;
+  console.log("Connected to MongoDB");
+  return cached.conn;
 }
 
 export default connectDB

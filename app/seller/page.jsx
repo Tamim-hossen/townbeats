@@ -4,7 +4,6 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 const AddProduct = () => {
 
@@ -47,10 +46,16 @@ const AddProduct = () => {
     console.log(formData)
     try {
       const token = await getToken()
-      
-      const {data} = await axios.post('/api/product/add',formData,{headers: {Authorization:`Bearer ${token}`}})
+      const response = await fetch('/api/product/add', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      })
+      const data = await response.json()
 
-      if(data.success){
+      if (data.success) {
         toast.success(data.message)
         setFiles([])
         setName("")
@@ -59,13 +64,11 @@ const AddProduct = () => {
         setPrice("")
         setOfferPrice("")
         setColors([])
+      } else {
+        toast.error(data.message)
       }
-      else{
-        toast.error(data.message);
-      }
-
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message)
     }
 
     
