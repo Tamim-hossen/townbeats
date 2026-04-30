@@ -11,10 +11,8 @@ export const inngest = new Inngest({ id: "faaris-next" });
 
 export const syncUserCreation = inngest.createFunction(
     {
-        id: 'sync-user-from-clerk'
-    },
-    {
-        event: "clerk/user.created"
+        id: 'sync-user-from-clerk',
+        triggers: { event: "clerk/user.created" }
     },
     async ({event}) => {
         const { id, first_name, last_name, email_addresses, image_url,username } = event.data
@@ -35,10 +33,8 @@ export const syncUserCreation = inngest.createFunction(
 
 export const syncUserUpdates = inngest.createFunction(
     {
-        id: 'update-user-from-clerk'
-    },
-    {
-        event: 'clerk/user.updated'
+        id: 'update-user-from-clerk',
+        triggers: { event: 'clerk/user.updated' }
     },
     async ({event}) => {
         const { id, first_name, last_name, email_addresses, image_url,username } = event.data
@@ -57,18 +53,17 @@ export const syncUserUpdates = inngest.createFunction(
 
 //delete user from db
 
-export const syncUserDelete = inngest.createFunction({
-    id: 'delete-user-with-clerk'
-},
-{
-    event: 'clerk/user.deleted'
-},
-async({event}) => {
-    const {id} = event.data
+export const syncUserDelete = inngest.createFunction(
+    {
+        id: 'delete-user-with-clerk',
+        triggers: { event: 'clerk/user.deleted' }
+    },
+    async({event}) => {
+        const {id} = event.data
 
-    await connectDB()
-    await User.findByIdAndDelete(id)
-}
+        await connectDB()
+        await User.findByIdAndDelete(id)
+    }
 )
 
 //creating user order
@@ -79,10 +74,9 @@ export const createUserOrder = inngest.createFunction(
         batchEvents:{
             maxSize:5,
             timeout: '5s'
-        }
-        
+        },
+        triggers: { event: 'order/created' }
     },
-    {event: 'order/created'},
     async({events}) =>{
         const orders = events.map((event)=>{
             return {
