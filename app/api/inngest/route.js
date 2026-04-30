@@ -1,13 +1,14 @@
-import { serve } from "inngest/next";
-import { createUserOrder, inngest, syncUserCreation, syncUserDelete, syncUserUpdates } from "@/config/inngest";
+import { NextResponse } from "next/server";
 
-// Create an API that serves zero functions
-export const { GET, POST, PUT } = serve({
-  client: inngest,
-  functions: [
-    syncUserCreation,
-    syncUserUpdates,
-    syncUserDelete,
-    createUserOrder
-  ],
-});
+// Inngest has been disabled - using direct database operations instead
+export async function GET() {
+  return NextResponse.json({ message: "Inngest endpoint disabled" }, { status: 200 });
+}
+
+export async function POST() {
+  return NextResponse.json({ message: "Inngest endpoint disabled" }, { status: 200 });
+}
+
+export async function PUT() {
+  return NextResponse.json({ message: "Inngest endpoint disabled" }, { status: 200 });
+}

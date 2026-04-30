@@ -4,18 +4,8 @@ import User from "@/models/User";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
-
-
     try {
-
-        const authToken = request.headers.get('x-clerk-auth-token');
-
-        if (!authToken) {
-            return NextResponse.json({ success: false });
-        }
-
-        const { userId } = getAuth(request);  
-
+        const { userId } = getAuth(request);
 
         if (!userId) {
             return NextResponse.json({ success: false, message: "User not authenticated" });
@@ -31,6 +21,6 @@ export async function GET(request) {
         return NextResponse.json({ success: true, user });
     } catch (error) {
         console.error("Error:", error);  
-        return NextResponse.json({ success: false, message: "Internal Server Error", error: error.message });
+        return NextResponse.json({ success: false, message: error.message });
     }
 }

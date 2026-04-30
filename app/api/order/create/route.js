@@ -1,46 +1,36 @@
 import connectDB from "@/config/db";
-import { inngest } from "@/config/inngest";
-import  Product from "@/models/product";
-import  User from "@/models/User";
+import Product from "@/models/product";
+import User from "@/models/User";
+import Order from "@/models/Order";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
     try {
         const { userId } = getAuth(request);
-        const { address,address_region, items, amountsent } = await request.json();
+        const { address, address_region, items, amountsent } = await request.json();
         if (!address || items.length === 0) {
             return NextResponse.json({ success: false, message: "Invalid Data" });
         }
 
         await connectDB();
 
-        let amount=amountsent;
+        let amount = amountsent;
         
-        // let amount = await items.reduce(async (acc,item) => {
-        //     const prod = await Product.findById(item.product)
-        //     return await acc+((prod.offerPrice===0 ? prod.price :prod.offerPrice )*item.quantity)
-        // }
-        // ,0);
-        
-
-        if(address_region==='Dhaka'){
-            amount+=80
+        if(address_region === 'Dhaka'){
+            amount += 80
         }
         else{
-            amount+=150
+            amount += 150
         }
 
-        
-       
-
-        await inngest.send({
-            name: "order/created",
-            data: { userId, 
-                    address, 
-                    items, 
-                    amount, 
-                    date: Date.now() },
+        // Create order directly in database
+        const newOrder = await Order.create({
+            userId,
+            address,
+            items,
+            amount,
+            date: Date.now()
         });
 
         // Clear cart
@@ -50,7 +40,7 @@ export async function POST(request) {
             await user.save();
         }
 
-        return NextResponse.json({ success: true, message: "Order Placed" });
+        return NextResponse.json({ success: true, message: "Order Placed", orderId: newOrder._id });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ success: false, message: error.message });
